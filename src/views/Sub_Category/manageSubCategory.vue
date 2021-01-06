@@ -1,25 +1,36 @@
 <template>
-  <v-container grid-list-xs style="height: 2000px">
-    <div id="manageSubCategory">
-      <v-row no-gutters>
-        <v-col cols md="5">
-          <v-card-title style="font-size: 2rem"> 
-            <!-- {{ SubCategoryList[0].name}} -->
-            <v-btn text @click="$router.push('/manageCategory')">ย้อนกลับ</v-btn>
-          </v-card-title>
-        </v-col>
-        <v-col cols md="2" offset-md="5">
-          <v-btn
-            block
-            class="white--text button"
-            outlined
-            @click="openInsertGroup(cat_id)"
-          >
-            เพิ่มประเภท
-          </v-btn>
-        </v-col>
-      </v-row>
+  <div id="manageSubCategory">
+    <v-card class="pa-0 ma-0" elevation="1" tile color="white">
+      <v-container grid-list-xs>
+        <v-row>
+          <v-col cols="12" md="9" style="font-size: 1.5rem">
+            <v-tooltip bottom>
+            <v-icon dark left color="black" @click="$router.push('/manageCategory')" slot="activator" >
+              mdi-arrow-left
+            </v-icon>
+            <span>ย้อนกลับ</span>
+            </v-tooltip>
+            {{ SubCategoryList[0].name }}
+          </v-col>
 
+          <v-col cols="12" md="3" class="pa-2">
+            <v-hover>
+              <v-btn
+                block
+                justify-center
+                large
+                text
+                class="button white--text"
+                @click="openInsertGroup()"
+                >เพิ่มหมวดหมู่</v-btn
+              >
+            </v-hover>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-card>
+
+    <v-container grid-list-xs>
       <v-simple-table fixed-header>
         <template v-slot:default>
           <thead>
@@ -55,8 +66,9 @@
       <v-dialog transition="dialog-top-transition" max-width="500" v-model="Delete_group">
         <DeleteSubCatgory :SubcategoryData="group_data" />
       </v-dialog>
-    </div>
-  </v-container>
+
+    </v-container>
+  </div>
 </template>
 
 <script>
@@ -111,11 +123,11 @@ export default {
     ListSubCategorydata() {
       api.ListSubCategory(
         {
-          id: this.cat_id,
+          id: parseInt(this.cat_id),
         },
         (result) => {
           this.SubCategoryList = result.data;
-          console.log(result.data);
+          // console.log(result.data);
         },
         (error) => {
           console.log(error);
@@ -125,6 +137,7 @@ export default {
   },
   mounted() {
     this.ListSubCategorydata();
+    console.log(this.cat_id);
   },
 };
 </script>

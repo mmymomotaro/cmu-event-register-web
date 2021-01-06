@@ -1,13 +1,13 @@
 <template>
   <div id="manageAsset">
-    <v-card class="pa-0 ma-0" elevation="2" tile>
+    <v-card class="pa-0 ma-0" elevation="1" tile color="white">
       <v-container grid-list-xs>
         <v-row>
           <v-col cols="12" md="9" style="font-size:1.5rem;">
             จัดการสินทรัพย์
             </v-col>
           <v-col cols="12" md="3" class="pa-2"
-            > <v-btn block justify-center large style="font-size:1rem;" @click="openInsertAsset()">เพิ่มสินทรัพย์</v-btn></v-col
+            > <v-btn block justify-center large class="button white--text"   @click="openInsertAsset()">เพิ่มสินทรัพย์</v-btn></v-col
           >
         </v-row>
       </v-container>
@@ -18,7 +18,7 @@
         <v-row>
           <v-col
             cols="6"
-            md="3"
+            md="2"
             class="pa-2"
             v-for="item in AssetList" :key="item.name"
           >
@@ -26,7 +26,7 @@
               <v-img
                 class="white--text align-end"
                 height="200px"
-                src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+              :src="item.url"
               >
               </v-img>
               <v-card-text
@@ -45,7 +45,6 @@
                 <div style="font-size: 14px">{{ item.category_name }}</div>
                 <div style="font-size: 14px">
                   <v-list-item-icon class="ma-0"
-                    ><v-icon color="gray" class="pr-2" x-small>circle</v-icon
                     >{{ item.sub_category_name }}</v-list-item-icon
                   >
                 </div>
@@ -66,21 +65,31 @@
                   </div>
                 </div>
               </v-card-text>
-              <v-card-actions class="pa-1 pt-0">
+
+              <v-row no-gutters>
+                <v-col cols="12" md="6" class="pa-1">
+                  <v-btn color="blue" text block @click="openUpdateAsset(item)">แก้ไข</v-btn>
+                </v-col>
+                <v-col cols="12" md="6" class="pa-1">
+                  <v-btn color="red" text block @click="openDeleteAsset()">ลบ</v-btn>
+                </v-col>
+              </v-row>
+
+              <!-- <v-card-actions class="pa-1 pt-0">
                 <v-btn
                   color="blue"
                   text
                   outlined
                   block
                   @click="openUpdateAsset(item)"
-                  >แก้ไข</v-btn
-                >
+                  >แก้ไข</v-btn>
               </v-card-actions>
+
               <v-card-actions class="pa-1 pt-0">
                 <v-btn color="red" text outlined block @click="openDeleteAsset()"
-                  >ลบ</v-btn
-                >
-              </v-card-actions>
+                  >ลบ</v-btn>
+              </v-card-actions> -->
+          
             </v-card>
           </v-col>
         </v-row>
@@ -145,7 +154,7 @@ export default {
     ListAssetdata() {
       api.ListAsset(
         {
-          id: "",
+          id: null,
         },
         (result) => {
           this.AssetList = result.data;

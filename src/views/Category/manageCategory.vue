@@ -1,21 +1,25 @@
 <template>
- <v-container grid-list-xs style="height: 2000px">
   <div id="Category">
-          <v-row no-gutters>
-            <v-col cols md="4">
-              <v-card-title primary-title style="font-size: 2rem"
-                >จัดการหมวดหมู่
-              </v-card-title>
-            </v-col>
-            <v-col cols md="3" offset-md="5">
+    <v-card class="pa-0 ma-0" elevation="1" tile color="white">
+      <v-container grid-list-xs>
+        <v-row>
+          <v-col cols="12" md="9" style="font-size: 1.5rem"> จัดการหมวดหมู่ </v-col>
+          <v-col cols="12" md="3" class="pa-2">
+            <v-hover>            
               <v-btn
-                block 
-                class="white--text button" large outlined @click="openInsertGroup()">
-                เพิ่มหมวดหมู่
-              </v-btn>
-            </v-col>
-          </v-row>
+              block
+              justify-center
+              large
+              class="button white--text"
+              @click="openInsertGroup()"
+              >เพิ่มหมวดหมู่</v-btn>
+              </v-hover>
+              </v-col>
+        </v-row>
+      </v-container>
+    </v-card>
 
+ <v-container grid-list-xs >
       <template>
         <v-simple-table fixed-header >
           <template v-slot:default>
@@ -55,8 +59,8 @@
       <DeleteCatgory :categoryData="group_data" /> 
     </v-dialog>
 
-  </div>
   </v-container>
+</div>
 </template>
 
 <script>
@@ -76,11 +80,6 @@ export default {
       categoryname: "",
       CategoryList: [],
       response: "",
-      // MoxCategoryList: [
-      //   { id:1 , name:"couputer"},
-      //   { id:2 , name:"paybox"},
-      //   { id:3 , name:"Lan"},
-      // ],
     };
   },
   components: { 
@@ -107,11 +106,11 @@ export default {
     ListCategorydata() {
       api.ListCategory(
         {
-            id: "",
+            id: null,
         },
       result => {
         this.CategoryList = result.data
-        // console.log(result.data)
+        console.log(result.data[0].id)
       },
       error=>{
         console.log(error) 

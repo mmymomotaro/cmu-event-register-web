@@ -4,7 +4,6 @@ import Home from '../views/Home.vue'
 import manageAsset from '../views/Asset/manageAsset.vue'
 import manageCategory from '../views/Category/manageCategory.vue'
 import manageSubCategory from '../views/Sub_Category/manageSubCategory.vue'
-import manageLocation from '../views/Location/manageLocation.vue'
 import listAssetitem from '../views/Asset/listAssetitem.vue'
 
 
@@ -39,11 +38,6 @@ const routes = [
     name: 'manageSubCategory',
     component: manageSubCategory
   },  
-  {
-    path: '/manageLocation',
-    name: 'manageLocation',
-    component: manageLocation
-  },
   {
     path: '/listAssetitem/:id',
     name: 'listAssetitem',

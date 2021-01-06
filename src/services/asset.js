@@ -90,6 +90,16 @@ ListAsset (obj, success, error) {
       }
     )
   },
+ListAssetDetail (obj, success, error) {
+    Vue.axios.post(address + '/asset_api/list/asset/item/id', obj).then(
+      (response) => {
+        success(response.data)
+      },
+      (response) => {
+        error(response)
+      }
+    )
+  },
 InsertAsset (obj, success, error) {
     Vue.axios.post(address + '/asset_api/create/asset', obj).then(
       (response) => {
@@ -100,6 +110,28 @@ InsertAsset (obj, success, error) {
       }
     )
   },
+// UploadUrl (obj, success, error) {
+//     Vue.axios.post(address + '/asset_api/upload/asset', obj).then(
+//       (response) => {
+//         success(response.data)
+//       },
+//       (response) => {
+//         error(response)
+//       }
+//     )
+//   },
+genItem (header, obj, success, error) {
+    Vue.axios.post(address + '/upload/asset', obj, header).then(
+      (response) => {
+        success(response.data)
+      },
+      (response) => {
+        error(response)
+      }
+    )
+  },
+
+  
     // --------------------------- AssetItem
     ListAssetItem (obj, success, error) {
     Vue.axios.post(address + '/asset_api/list/asset/item', obj).then(

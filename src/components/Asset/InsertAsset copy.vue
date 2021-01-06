@@ -37,12 +37,13 @@
                 <v-col cols="12" sm="6" class="px-2">
                   <v-select
                   color="light-blue darken-3"
-                    v-model="Categorydata.id"
+                    v-model="Categorydata"
                     :items="CategoryList"
                     item-text="name"
                     :error-messages="errors"
                     :value="item"
                     return-object
+                    label="หมวดหมู่"
                     @change="ListSubCategorydata()"
                     required
                   ></v-select>
@@ -160,7 +161,7 @@
 import moment from "moment";
 import api from "../../services/asset";
 export default {
-  name: "UpdateAsset",
+  name: "InsertAsset",
   data() {
     return {
       e1: 1,

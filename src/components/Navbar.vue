@@ -19,14 +19,11 @@
  <!-- <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon> -->
       <!-- @click="drawer = !drawer" -->
 
-      <v-navigation-drawer app v-model="drawer" width="305" elevation="10" color="grey lighten-3">
+      <v-navigation-drawer app v-model="drawer" width="305" elevation="10">
         <!--sidebar -->
         <v-card
           elevation="10"
-          class="mx-auto"
-          style="
-            background: linear-gradient(90.75deg, #00b9f8 5.43%, #3780ee 84.26%), #c4c4c4;
-          "
+          class="mx-auto botton"
         >
           <v-list-item three-line >
             <v-list-item-content>
@@ -41,7 +38,7 @@
           </v-card-actions>
         </v-card>
 
-        <v-card class="mx-auto hover" max-width="400" flat color="grey lighten-3" >
+        <v-card class="mx-auto hover" max-width="400" flat >
           <v-list >
             <v-list-item-group  color="blue darken-3" >
               <v-list-item @click="$router.push('/manageAsset')">
@@ -58,20 +55,13 @@
                 </v-list-item-content>
               </v-list-item>
 
-              <v-list-item @click="$router.push('/manageLocation')">
-                <v-list-item-icon><v-icon>place</v-icon></v-list-item-icon>
-                <v-list-item-content>
-                  <v-list-item-title>จัดการสถานที่เก็บ</v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-
               <v-list-item>
                 <v-list-item-icon><v-icon>content_paste</v-icon></v-list-item-icon>
                 <v-list-item-content>
                   <v-list-item-title>จัดการคำขอ</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
-
+              
               <v-list-item>
                 <v-list-item-icon><v-icon>signal_cellular_no_sim</v-icon></v-list-item-icon>
                 <v-list-item-content>
@@ -89,6 +79,9 @@
 <script>
 export default {
   name: "Navbar",
+  components : {
+
+  },
   data() {
     return {
       drawer: false,

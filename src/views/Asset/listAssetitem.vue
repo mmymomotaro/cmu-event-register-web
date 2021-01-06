@@ -1,13 +1,61 @@
 <template>
-  <v-container grid-list-xs>
-    <div id="listAssetitem">
-    <nav>
-    <v-card-title primary-title style="font-size: 2rem">
-             <!-- {{ AssetList[0].name }} -->
-      </v-card-title>
-    </nav>
-    </div>
-  </v-container>
+  <div id="listAssetitem">
+    <v-card class="pa-0 ma-0" elevation="1" tile color="white">
+      <v-container grid-list-xs>
+        <v-row>
+          <v-col cols="12" md="9" style="font-size: 1.5rem"> Title </v-col>
+          <v-col cols="12" md="3" class="pa-2">
+            <v-hover>            
+              <v-btn
+              block
+              justify-center
+              large
+              class="button white--text"
+              @click="openInsertAsset()"
+              >เพิ่มสินทรัพย์</v-btn>
+              </v-hover>
+              </v-col>
+        </v-row>
+      </v-container>
+    </v-card>
+
+    <v-container grid-list-xs>
+      <v-row justify="center" class="pa-2">
+        <v-expansion-panels focusable>
+          <v-expansion-panel v-for="item in AssetListitem" :key="item" >
+            <v-expansion-panel-header style="font-size:1rem;"  @click="AssetitemDetail(item.id)">{{item.name}}<br> sn : {{item.serial_number}}
+            </v-expansion-panel-header>
+            <v-expansion-panel-content class="pa-2">
+                <div style="font-size: 16px; font-weight: bold; height: 50px">
+                  {{item.name}}
+                </div>
+                <div style="font-size: 14px">
+                  <v-list-item-icon class="ma-0"
+                    ><v-icon color="gray" class="pr-2">qr_code_2</v-icon
+                    >{{ Assetdetail.barcode}}</v-list-item-icon
+                  >
+                </div>
+                <div style="font-size: 14px">{{ item.category_name }}</div>
+                <div style="font-size: 14px">
+                  <v-list-item-icon class="ma-0"
+                    >{{ item.sub_category_name }}</v-list-item-icon
+                  >
+                </div>
+                <div v-if="item.qty === 0">
+                  <div style="font-size: 14px" class="grey-darken-1--text">
+                    <v-list-item-icon class="ma-0"
+                      ><v-icon color="" class="pr-2">check_circle</v-icon> เหลือ
+                      {{ item.qty }} ชิ้น</v-list-item-icon
+                    >
+                  </div>
+                </div>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
+      </v-row>
+    </v-container>
+    
+  </div>
 </template>
 
 <script>
@@ -17,18 +65,41 @@ export default {
   data() {
     return {
       Asset_id: this.$route.params.id,
-      AssetList: [],
+      AssetListitem: [],
+      assetdetailID: 0,
+      Assetdetail: [],
     };
   },
   components: {},
   methods: {
-    ListAssetdata() {
-      api.ListAssetItem(
+    AssetitemDetail(val){
+      this.assetdetailID = val,
+      this.ListAssetItemDetaildata()
+    },
+    ListAssetItemDetaildata() {
+      console.log(this.Asset_id)
+      api.ListAssetDetail(
         {
-          id: this.Asset_id,
+          id: parseInt(this.assetdetailID),
         },
         (result) => {
-          this.AssetList = result.data;
+          this.Assetdetail = result.data;
+          console.log(result.data);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+
+    ListAssetItemdata() {
+      console.log(this.Asset_id)
+      api.ListAssetItem(
+        {
+          id: parseInt(this.Asset_id),
+        },
+        (result) => {
+          this.AssetListitem = result.data;
           console.log(result.data);
         },
         (error) => {
@@ -37,9 +108,8 @@ export default {
       );
     },
   },
-
   mounted() {
-    this.ListAssetdata();
+    this.ListAssetItemdata();
   },
 };
 </script>
