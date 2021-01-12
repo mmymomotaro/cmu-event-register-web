@@ -1,35 +1,74 @@
 <template>
-  <v-card>
-    <v-toolbar color="red" dark style="font-size:1.5rem;">ต้องการลบ "{{AssetData.name}}" หรือไม่</v-toolbar>
+<div>
+    <v-card>
+    <v-card class="pa-3 white--text" color="red" style="font-size:1.5rem">ต้องการลบสินทรัพย์ "{{SendAssetData.name}}" หรือไม่</v-card>
     <v-card>
       <v-row no-gutters class="pa-3">
         <v-col cols="12" md="6"  class="pa-1" >
-          <v-btn block outlined height="2.5rem"> ยกเลิก </v-btn>
+          <v-btn block outlined height="2.5rem" @click="closeDeletegroup()"> ยกเลิก </v-btn>
         </v-col>
         <v-col cols="12" md="6" class="pa-1">
-          <v-btn block outlined color="red" height="2.5rem"> ยืนยัน </v-btn>
+          <v-btn block outlined color="red" height="2.5rem" @click="DeleteAssetdata()"> ยืนยัน </v-btn>
         </v-col>
       </v-row>
     </v-card>
   </v-card>
+<v-dialog
+      persistent
+      max-width="300"
+      v-model="Delete_group"
+    >
+      <DeletingAsset />
+    </v-dialog>
+</div>
 </template>
 
 <script>
-// import api from "../../services/asset";
+import api from "../../services/asset";
+import DeletingAsset from "../../components/Asset/AssetPopup/DeletingAsset.vue";
 export default {
   name: "DeleteAsset",
-  props: ["AssetData"],
+  props: ["SendAssetData"],
   data() {
     return {
-      Categoryitem: [],
-      categoryname: "",
+      Delete_group: false,
+      dataclose: false,
+      Asset: [],
       response: "",
     };
   },
-  components: {},
-  methods: {},
+  components: { DeletingAsset },
+  methods: {
+    openDeleting() {
+      this.Delete_group = true;
+    },
+    closeDeleting() {
+      this.Delete_group = false;
+    },
+    DeleteAssetdata() {
+      this.openDeleting() 
+      api.DeleteAsset(
+        {
+          id: this.SendAssetData.id,
+        },
+        (result) => {
+          this.Asset = result.data;
+          console.log( this.Asset)
+          this.closeDeleting()
+          this.closeDeletegroup()
+
+        },
+        (error) => {
+          this.Delete_group = false;
+          console.log(error);
+        }
+      );
+    },
+    closeDeletegroup(){
+      this.$emit("close", this.dataclose);
+    },
+  },
   mounted() {
-    // console.log(this.SubcategoryData);
   },
 };
 </script>

@@ -5,7 +5,7 @@ Vue.use(VueAxios, axios)
 const address = 'http://10.0.3.226:3000'
 export default {
   // -------------------------  Category
-  InsertCategory (obj, success, error) { // เพิ่ม Category//
+  InsertCategory(obj, success, error) { // เพิ่ม Category//
     Vue.axios.post(address + '/asset_api/create/category', obj).then(
       (response) => {
         success(response.data)
@@ -15,7 +15,7 @@ export default {
       }
     )
   },
-  ListCategory (obj, success, error) { // แสดง Category ทั้งหมด//
+  ListCategory(obj, success, error) { // แสดง Category ทั้งหมด//
     Vue.axios.post(address + '/asset_api/list/category', obj).then(
       (response) => {
         success(response.data)
@@ -25,7 +25,7 @@ export default {
       }
     )
   },
-  SelectCategory (obj, success, error) {  // เลือก Category ที่ ID//
+  SelectCategory(obj, success, error) {  // เลือก Category ที่ ID//
     Vue.axios.post(address + '/asset_api/list/category/id', obj).then(
       (response) => {
         success(response.data)
@@ -35,8 +35,18 @@ export default {
       }
     )
   },
-  UpdateCategory (obj, success, error) { // แก้ไข Category ที่ ID //
+  UpdateCategory(obj, success, error) { // แก้ไข Category ที่ ID //
     Vue.axios.post(address + '/asset_api/update/category', obj).then(
+      (response) => {
+        success(response.data)
+      },
+      (response) => {
+        error(response)
+      }
+    )
+  },
+  DeleteCategory(obj, success, error) { 
+    Vue.axios.post(address + '/asset_api/delete/category/id', obj).then(
       (response) => {
         success(response.data)
       },
@@ -47,7 +57,7 @@ export default {
   },
 
 // -------------------------  SubCategory
-ListSubCategory (obj, success, error) {
+ListSubCategory(obj, success, error) {
     Vue.axios.post(address + '/asset_api/list/subcategory', obj).then(
       (response) => {
         success(response.data)
@@ -58,7 +68,7 @@ ListSubCategory (obj, success, error) {
     )
   },
   
-  InsertSubCategory (obj, success, error) {
+  InsertSubCategory(obj, success, error) {
     Vue.axios.post(address + '/asset_api/create/subcategory', obj).then(
       (response) => {
         success(response.data)
@@ -68,7 +78,7 @@ ListSubCategory (obj, success, error) {
       }
     )
   },
-  UpdateSubCategory (obj, success, error) {
+  UpdateSubCategory(obj, success, error) {
     Vue.axios.post(address + '/asset_api/update/subcategory', obj).then(
       (response) => {
         success(response.data)
@@ -78,9 +88,29 @@ ListSubCategory (obj, success, error) {
       }
     )
   },
-
+  SelectSubCategory(obj, success, error) {
+    Vue.axios.post(address + '/asset_api/list/subcategory/id', obj).then(
+      (response) => {
+        success(response.data)
+      },
+      (response) => {
+        error(response)
+      }
+    )
+  },
+  DeleteSubCategory(obj, success, error) {
+    Vue.axios.post(address + '/asset_api/list/subcategory/id', obj).then(
+      (response) => {
+        success(response.data)
+      },
+      (response) => {
+        error(response)
+      }
+    )
+  },
+  
   // --------------------------- Asset
-ListAsset (obj, success, error) {
+ListAsset(obj, success, error) {
     Vue.axios.post(address + '/asset_api/list/asset', obj).then(
       (response) => {
         success(response.data)
@@ -90,7 +120,7 @@ ListAsset (obj, success, error) {
       }
     )
   },
-ListAssetDetail (obj, success, error) {
+ListAssetDetail(obj, success, error) {
     Vue.axios.post(address + '/asset_api/list/asset/item/id', obj).then(
       (response) => {
         success(response.data)
@@ -100,7 +130,7 @@ ListAssetDetail (obj, success, error) {
       }
     )
   },
-InsertAsset (obj, success, error) {
+InsertAsset(obj, success, error) {
     Vue.axios.post(address + '/asset_api/create/asset', obj).then(
       (response) => {
         success(response.data)
@@ -110,17 +140,8 @@ InsertAsset (obj, success, error) {
       }
     )
   },
-// UploadUrl (obj, success, error) {
-//     Vue.axios.post(address + '/asset_api/upload/asset', obj).then(
-//       (response) => {
-//         success(response.data)
-//       },
-//       (response) => {
-//         error(response)
-//       }
-//     )
-//   },
-genItem (header, obj, success, error) {
+
+genItem(header, obj, success, error) {
     Vue.axios.post(address + '/upload/asset', obj, header).then(
       (response) => {
         success(response.data)
@@ -130,11 +151,80 @@ genItem (header, obj, success, error) {
       }
     )
   },
+HaederAsset(obj, success, error) {
+    Vue.axios.post(address + '/asset_api/list/asset/id', obj).then(
+      (response) => {
+        success(response.data)
+      },
+      (response) => {
+        error(response)
+      }
+    )
+  },
+  UpdateAsset(obj, success, error) {
+    Vue.axios.post(address + '/asset_api/update/asset', obj).then(
+      (response) => {
+        success(response.data)
+      },
+      (response) => {
+        error(response)
+      }
+    )
+  },
+  DeleteAsset(obj, success, error) {
+    Vue.axios.post(address + '/asset_api/delete/asset/id', obj).then(
+      (response) => {
+        success(response.data)
+      },
+      (response) => {
+        error(response)
+      }
+    )
+  },
 
-  
     // --------------------------- AssetItem
-    ListAssetItem (obj, success, error) {
+    ListAssetItem(obj, success, error) {
     Vue.axios.post(address + '/asset_api/list/asset/item', obj).then(
+      (response) => {
+        success(response.data)
+      },
+      (response) => {
+        error(response)
+      }
+    )
+  },
+    LocationAssetItem(obj, success, error) {
+    Vue.axios.post(address + '/asset_api/list/location', obj).then(
+      (response) => {
+        success(response.data)
+      },
+      (response) => {
+        error(response)
+      }
+    )
+  },
+  InsertAssetItem(obj, success, error) {
+    Vue.axios.post(address + '/asset_api/create/asset/item', obj).then(
+      (response) => {
+        success(response.data)
+      },
+      (response) => {
+        error(response)
+      }
+    )
+  },
+    ListAssetItemAvailable(obj, success, error) {
+    Vue.axios.post(address + '/asset_api/list/asset/item/available', obj).then(
+      (response) => {
+        success(response.data)
+      },
+      (response) => {
+        error(response)
+      }
+    )
+  },
+  ListAssetItemUnavailable(obj, success, error) {
+    Vue.axios.post(address + '/asset_api/list/asset/item/unavailable', obj).then(
       (response) => {
         success(response.data)
       },

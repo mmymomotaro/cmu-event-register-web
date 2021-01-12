@@ -57,11 +57,11 @@
       </v-simple-table>
 
       <v-dialog transition="dialog-top-transition" max-width="500" v-model="Insert_group">
-        <FormInsertSubCategory :category_ID="group_data" />
+        <InsertSubCategory :category_ID="group_data" />
       </v-dialog>
 
       <v-dialog transition="dialog-top-transition" max-width="500" v-model="Update_group">
-        <FormUpdateSubCategory :SubcategoryData="group_data" />
+        <UpdateSubCategory :SubcategoryData="group_data" />
       </v-dialog>
 
       <v-dialog transition="dialog-top-transition" max-width="500" v-model="Delete_group">
@@ -73,9 +73,9 @@
 </template>
 
 <script>
-import FormUpdateSubCategory from "../../components/SubCategory/FormUpdateSubCategory.vue";
+import UpdateSubCategory from "../../components/SubCategory/UpdateSubCategory.vue";
 import DeleteSubCatgory from "../../components/SubCategory/DeleteSubCatgory.vue";
-import FormInsertSubCategory from "../../components/SubCategory/FormInsertSubCategory.vue";
+import InsertSubCategory from "../../components/SubCategory/InsertSubCategory.vue";
 import api from "../../services/asset";
 export default {
   name: "manageSubCategory",
@@ -91,9 +91,9 @@ export default {
     };
   },
   components: {
-    FormInsertSubCategory,
+    InsertSubCategory,
     DeleteSubCatgory,
-    FormUpdateSubCategory,
+    UpdateSubCategory,
   },
   methods: {
     openUpdateGroup(val) {

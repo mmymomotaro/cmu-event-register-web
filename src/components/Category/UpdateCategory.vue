@@ -21,7 +21,7 @@
 <script>
 import api from "../../services/asset";
 export default {
-  name: "FormUpdateCategory",
+  name: "UpdateCategory",
   props: ["categoryData"],
   data() {
     return {

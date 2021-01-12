@@ -32,7 +32,7 @@
 import api from "../../services/asset";
 import Swal from "sweetalert2";
 export default {
-name: 'FormInsertCategory',
+name: 'InsertCategory',
 
 data(){
   return {

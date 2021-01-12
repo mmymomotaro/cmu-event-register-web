@@ -3,9 +3,8 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import manageAsset from '../views/Asset/manageAsset.vue'
 import manageCategory from '../views/Category/manageCategory.vue'
-import manageSubCategory from '../views/Sub_Category/manageSubCategory.vue'
 import listAssetitem from '../views/Asset/listAssetitem.vue'
-
+import manageAssetDamage from '../views/AssetDamage/manageAssetDamage.vue'
 
 Vue.use(VueRouter)
 
@@ -34,14 +33,14 @@ const routes = [
     component: manageCategory
   },
   {
-    path: '/manageSubCategory/:id',
-    name: 'manageSubCategory',
-    component: manageSubCategory
-  },  
-  {
     path: '/listAssetitem/:id',
     name: 'listAssetitem',
     component: listAssetitem
+  },
+    {
+    path: '/manageAssetDamage/',
+    name: 'manageAssetDamage',
+    component: manageAssetDamage
   },
 ]
 

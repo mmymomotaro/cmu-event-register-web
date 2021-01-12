@@ -84,7 +84,7 @@ components: {  },
   },
 
   mounted() {
-    
+    console.log(this.category_ID)
     },
 }
 </script>

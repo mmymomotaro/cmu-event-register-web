@@ -16,11 +16,8 @@
       </v-btn>
     </v-toolbar>
     
- <!-- <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon> -->
-      <!-- @click="drawer = !drawer" -->
-
-      <v-navigation-drawer app v-model="drawer" width="305" elevation="10">
-        <!--sidebar -->
+    <v-navigation-drawer app v-model="drawer" width="305" elevation="10">
+      <!--sidebar -->
         <v-card
           elevation="10"
           class="mx-auto botton"
@@ -39,8 +36,10 @@
         </v-card>
 
         <v-card class="mx-auto hover" max-width="400" flat >
+
+
           <v-list >
-            <v-list-item-group  color="blue darken-3" >
+            <v-list-item-group  color="blue darken-3" mandatory>
               <v-list-item @click="$router.push('/manageAsset')">
                 <v-list-item-icon ><v-icon >inventory</v-icon></v-list-item-icon>
                 <v-list-item-content>
@@ -62,17 +61,12 @@
                 </v-list-item-content>
               </v-list-item>
               
-              <v-list-item>
-                <v-list-item-icon><v-icon>signal_cellular_no_sim</v-icon></v-list-item-icon>
-                <v-list-item-content>
-                  <v-list-item-title>จัดการสินทรัพย์เสียหาย</v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
             </v-list-item-group>
-          </v-list>
+          </v-list> 
+
         </v-card>
       </v-navigation-drawer>
-      <!--sidebar -->
+      
     </nav>
 </template>
 
