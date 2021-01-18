@@ -1,6 +1,6 @@
 <template>
  <v-card
-        color="blue darken-3"
+        color="light-blue darken-1"
         dark
       >
         <v-card-text class="px-3 py-3">
@@ -17,7 +17,7 @@
 <script>
 
 export default {
-  name: "LoadingAsset",
+  name: "PopupInsert",
   data() {
     return {
     };

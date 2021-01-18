@@ -1,10 +1,10 @@
 <template>
  <v-card
-        color="green darken-3"
+        color="red"
         dark
       >
         <v-card-text class="px-3 py-3">
-          สำเร็จ
+          กำลังลบข้อมูล
           <v-progress-linear
             indeterminate
             color="white"
@@ -17,7 +17,7 @@
 <script>
 
 export default {
-  name: "SuccessUpload",
+  name: "PopupDelete",
   data() {
     return {
     };

@@ -2,7 +2,7 @@
   <div>
     <v-card>
       <v-card class="pa-3 white--text" color="red" style="font-size: 1.5rem"
-        >ต้องการลบ "{{ categoryData.name }}" หรือไม่</v-card
+        >ต้องการลบ "{{ subcateData.sname }}" หรือไม่</v-card
       >
       <v-card>
         <v-row no-gutters class="pa-3">
@@ -17,7 +17,7 @@
               outlined
               color="red"
               height="2.5rem"
-              @click="DeleteCategorydata()"
+              @click="DeleteSubCategorydata()"
             >
               ยืนยัน
             </v-btn>
@@ -32,48 +32,56 @@
 </template>
 
 <script>
-import api from "../../services/asset";
 import PopupDelete from "../Popup/PopupDelete";
+import api from "../../services/asset";
 export default {
-  name: "DeleteCategory",
-  props: ["categoryData"],
+  name: "DeleteSubCatgory",
+  props: ["subcategoryData"],
   data() {
     return {
+      subcateData: this.subcategoryData,
+      subCategoryitem: [],
+      response: "",
       Delete_group: false,
       dataclose: false,
-      categoryname: "",
-      response: "",
     };
   },
   components: { PopupDelete },
   methods: {
+    closeDeletegroup() {
+      this.$emit("close", this.dataclose, this.subcateData.category_id);
+    },
     cancelDeletegroup() {
       this.$emit("cancel", this.dataclose);
     },
-    closeDeletegroup() {
-      this.$emit("close", this.dataclose);
-    },
-    openDeleting() {
+    openDelete() {
       this.Delete_group = true;
     },
-    closeDeleting() {
+    closeDelete() {
       this.Delete_group = false;
     },
-    DeleteCategorydata() {
-      this.openDeleting();
-      api.DeleteCategory(
+    DeleteSubCategorydata() {
+      this.openDelete();
+      api.DeleteSubCategory(
         {
-          id: this.categoryData.id,
+          id: parseInt(this.subcateData.id),
         },
         (result) => {
-          this.response = result.data;
-          this.closeDeleting();
+          this.subCategoryitem = result.data;
+          this.closeDelete();
           this.closeDeletegroup();
         },
         (error) => {
           console.log(error);
         }
       );
+    },
+  },
+  watch: {
+    subcategoryData(val) {
+      if (val) {
+        this.subcateData = this.subcategoryData;
+      }
     },
   },
   mounted() {},

@@ -3,12 +3,12 @@
     <v-card>
       <v-stepper v-model="e1">
         <v-stepper-header>
-          <v-stepper-step :complete="e1 > 1" step="1" color="blue">
+          <v-stepper-step :complete="e1 > 1" step="1" color="red darken-1">
             ข้อมูลสินทรัพย์
           </v-stepper-step>
           <v-divider></v-divider>
 
-          <v-stepper-step :complete="e1 > 2" step="2" color="blue">
+          <v-stepper-step :complete="e1 > 2" step="2" color="red darken-1">
             รูปภาพ / บาร์โค้ด
           </v-stepper-step>
 

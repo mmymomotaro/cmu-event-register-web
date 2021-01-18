@@ -1,7 +1,7 @@
 <template>
 <div>
     <v-card>
-    <v-card class="pa-3 white--text" color="red" style="font-size:1.5rem">ต้องการลบสินทรัพย์ "{{SendAssetData.name}}" หรือไม่</v-card>
+    <v-card class="pa-3 white--text" color="red darken-1" style="font-size:1.5rem">ต้องการลบสินทรัพย์ "{{SendAssetData.name}}" หรือไม่</v-card>
     <v-card>
       <v-row no-gutters class="pa-3">
         <v-col cols="12" md="6"  class="pa-1" >

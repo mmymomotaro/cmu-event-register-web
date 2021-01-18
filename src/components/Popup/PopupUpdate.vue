@@ -1,10 +1,10 @@
 <template>
  <v-card
-        color="red"
+        color="blue darken-3"
         dark
       >
         <v-card-text class="px-3 py-3">
-          กำลังลบ
+          กำลังอัพเดทข้อมูล
           <v-progress-linear
             indeterminate
             color="white"
@@ -17,7 +17,7 @@
 <script>
 
 export default {
-  name: "DeletingCatgory",
+  name: "PopupUpdate",
   data() {
     return {
     };

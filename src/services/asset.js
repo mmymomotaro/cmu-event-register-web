@@ -99,7 +99,7 @@ ListSubCategory(obj, success, error) {
     )
   },
   DeleteSubCategory(obj, success, error) {
-    Vue.axios.post(address + '/asset_api/list/subcategory/id', obj).then(
+    Vue.axios.post(address + '/asset_api/delete/subcategory/id', obj).then(
       (response) => {
         success(response.data)
       },
@@ -110,8 +110,9 @@ ListSubCategory(obj, success, error) {
   },
   
   // --------------------------- Asset
-ListAsset(obj, success, error) {
-    Vue.axios.post(address + '/asset_api/list/asset', obj).then(
+  
+  SerachAssetBycat(obj, success, error) {
+    Vue.axios.post(address + '/asset_api/search/asset/category', obj).then(
       (response) => {
         success(response.data)
       },
@@ -120,8 +121,18 @@ ListAsset(obj, success, error) {
       }
     )
   },
-ListAssetDetail(obj, success, error) {
-    Vue.axios.post(address + '/asset_api/list/asset/item/id', obj).then(
+SerachAsset(obj, success, error) {
+    Vue.axios.post(address + '/asset_api/search/asset', obj).then(
+      (response) => {
+        success(response.data)
+      },
+      (response) => {
+        error(response)
+      }
+    )
+  },
+ListAsset(obj, success, error) {
+    Vue.axios.post(address + '/asset_api/list/asset', obj).then(
       (response) => {
         success(response.data)
       },
@@ -203,6 +214,16 @@ HaederAsset(obj, success, error) {
       }
     )
   },
+    SelectLocationAssetItem(obj, success, error) {
+    Vue.axios.post(address + '/asset_api/list/location/id', obj).then(
+      (response) => {
+        success(response.data)
+      },
+      (response) => {
+        error(response)
+      }
+    )
+  },
   InsertAssetItem(obj, success, error) {
     Vue.axios.post(address + '/asset_api/create/asset/item', obj).then(
       (response) => {
@@ -233,6 +254,60 @@ HaederAsset(obj, success, error) {
       }
     )
   },
+  ListAssetItemDetail(obj, success, error) {
+    Vue.axios.post(address + '/asset_api/list/asset/item/id', obj).then(
+      (response) => {
+        success(response.data)
+      },
+      (response) => {
+        error(response)
+      }
+    )
+  },
+  UpdateAssetItem(obj, success, error) {
+    Vue.axios.post(address + '/asset_api/update/item', obj).then(
+      (response) => {
+        success(response.data)
+      },
+      (response) => {
+        error(response)
+      }
+    )
+  },
+    DeleteAssetItem(obj, success, error) {
+    Vue.axios.post(address + '/asset_api/delete/asset/item/id', obj).then(
+      (response) => {
+        success(response.data)
+      },
+      (response) => {
+        error(response)
+      }
+    )
+  },
+  //____________ Asset Damage________________
+    ListAssetDamage(obj, success, error) {
+    Vue.axios.post(address + '/asset_api/list/asset/damage', obj).then(
+      (response) => {
+        success(response.data)
+      },
+      (response) => {
+        error(response)
+      }
+    )
+  },
+
+    //____________ AssetItem Damage________________
+    ListAssetItemDamage(obj, success, error) {
+    Vue.axios.post(address + '/asset_api/list/asset/item/damage', obj).then(
+      (response) => {
+        success(response.data)
+      },
+      (response) => {
+        error(response)
+      }
+    )
+  },
+
 }
 
 

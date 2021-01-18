@@ -23,13 +23,12 @@
               <v-form>
                 <v-row no-gutters>
                   <v-col cols="12" sm="12" class="px-2">
-                    {{New}}
                     <v-text-field
                       required
                       v-model="assetname"
-                      :rules="rules"
+                
                       counter
-                      maxlength="25"
+                      maxlength="20"
                       hint="This field uses maxlength attribute"
                       label="ชื่อสินทรัพย์"
                       color="light-blue darken-3"
@@ -43,7 +42,8 @@
                       :items="CategoryList"
                       item-text="name"
                       :error-messages="errors"
-                      :value="item"
+                    
+                  
                       return-object
                       label="หมวดหมู่"
                       @change="ListSubCategorydata()"
@@ -58,7 +58,7 @@
                       item-text="sname"
                       :error-messages="errors"
                       return-object
-                      :value="item"
+                   
                       label="ประเภท"
                       required
                     ></v-select>
@@ -87,14 +87,18 @@
                 <v-row no-gutters>
                   <v-col cols="12" sm="6" class="px-2">
                     <!-- <input type="file" @change="fileChange" /> -->
-                    <input
+                   
+                    <img height="200px" width="200px" :src="urlfile == '' ? 'https://firebasestorage.googleapis.com/v0/b/np-storage-it.appspot.com/o/no-image.jpg?alt=media':urlfile" @click="$refs.fileUpload.click()" />
+                  <input
                       color="light-blue darken-3"
                       type="file"
                       class="form-control-file"
                       id="fileUpload"
-                      @change="testimg()"
+                      ref="fileUpload"
+                      hidden
+                      @change="testimg"
                     />
-                    <img height="200px" width="200px" :src="urlfile" />
+                 
                   </v-col>
                   <v-col cols="12" sm="6" class="px-2">
                     <v-text-field
@@ -108,15 +112,16 @@
                     ></v-text-field>
                     <v-row class="pa-0 ma-0">
                       <v-col cols="12" class="pa-0 ma-0">
-                        <v-btn  class="botton white--text" block @click="genbarcode()">Barcode</v-btn>
+                        <v-btn class="botton white--text" block @click="genbarcode()"
+                          >Barcode</v-btn
+                        >
                         <barcode
-                      v-model="barcodest"
-                      :options="{ displayValue: false }"
-                    ></barcode>
+                        v-if="barcodest != ''"
+                          v-model="barcodest"
+                          :options="{ displayValue: false }"
+                        ></barcode>
                       </v-col>
                     </v-row>
-
-                    
                   </v-col>
                 </v-row>
               </v-form>
@@ -145,7 +150,7 @@
                   <v-col cols="12" sm="6" class="px-2 py-2">
                     รูป:
                     <div>
-                      <img height="200px" width="200px" :src="urlfile" />
+                      <img height="200px" width="200px" :src="urlfile == '' ? 'https://firebasestorage.googleapis.com/v0/b/np-storage-it.appspot.com/o/no-image.jpg?alt=media':urlfile" />
                     </div>
                   </v-col>
                   <v-col cols="12" sm="6" class="px-2 py-2">
@@ -153,6 +158,7 @@
                     <div>
                       <barcode
                         v-model="barcodest"
+                         v-if="barcodest != ''"
                         :options="{ displayValue: false }"
                       ></barcode>
                     </div>
@@ -161,7 +167,7 @@
               </v-form>
             </v-card>
             <v-btn text @click="e1 = 2"> ย้อนกลับ </v-btn>
-            <v-btn class="botton white--text" type="submit" @click=" checkimgdata()">
+            <v-btn class="botton white--text" type="submit" @click="checkimgdata()">
               เพิ่มข้อมูล
             </v-btn>
           </v-stepper-content>
@@ -169,12 +175,16 @@
       </v-stepper>
     </v-card>
 
-    <v-dialog
-      persistent
-      max-width="300"
-      v-model="Loading_group"
-    >
-      <LoadingAsset />
+    <v-dialog persistent max-width="300" v-model="Insert_group">
+      <PopupInsert />
+    </v-dialog>
+
+    <v-dialog max-width="450" v-model="ErrorInputiden_group">
+      <PopupErrorInputiden />
+    </v-dialog>
+
+    <v-dialog max-width="450" v-model="ErrorRespon_group">
+      <PopupResponError />
     </v-dialog>
   </div>
 </template>
@@ -182,13 +192,17 @@
 <script>
 import moment from "moment";
 import api from "../../services/asset";
-import LoadingAsset from "../../components/Asset/AssetPopup/LoadingAsset.vue";
+import PopupInsert from "../Popup/PopupInsert";
+import PopupErrorInputiden from "../Popup/PopupErrorInputiden.vue";
+import PopupResponError from "../Popup/PopupResponError.vue";
 export default {
   name: "InsertAsset",
-  props: ["New"],
   data() {
     return {
       dataclose: false,
+      Insert_group: false,
+      ErrorInputiden_group: false,
+      ErrorRespon_group: false,
       e1: 1,
       asset: [],
       assetname: "",
@@ -199,7 +213,7 @@ export default {
       barcodest: "",
       description: "",
       barcode: "",
-      time: Date(),
+      time: "",
       response: "",
       imagefile: "",
       urlfile:
@@ -209,32 +223,46 @@ export default {
       urlFromApi: "",
       itemImg: "",
       genimg: "",
-      Loading_group: false,
     };
   },
-  components: { LoadingAsset },
+  components: { PopupInsert, PopupErrorInputiden, PopupResponError },
   methods: {
-    resetdata(){
-      this.e1 = 1,
-      this.assetname = "",
-      this.Categorydata.name = "",
-      this.SubCategorydata.sname = "",
-      this.barcodest = "",
-      this.description = "",
-      this.urlFromApi = "",
-      this.imagefile = "",
-      this.urlfile = "https://firebasestorage.googleapis.com/v0/b/np-storage-it.appspot.com/o/no-image.jpg?alt=media"
+    resetdata() {
+      (this.selectedFile = ""),
+        (this.dataclose = false),
+        (this.Insert_group = false),
+        (this.ErrorInputiden_group = false),
+        (this.ErrorRespon_group = false),
+        (this.e1 = 1),
+        (this.asset = []),
+        (this.assetname = ""),
+        (this.CategoryList = []),
+        (this.Categorydata = []),
+        (this.SubCategoryList = []),
+        (this.SubCategorydata = []),
+        (this.barcodest = ""),
+        (this.description = ""),
+        (this.barcode = ""),
+        (this.time = ""),
+        (this.response = ""),
+        (this.imagefile = ""),
+        (this.urlfile = ""),
+        (this.img =
+          "https://firebasestorage.googleapis.com/v0/b/np-storage-it.appspot.com/o/no-image.jpg?alt=media"),
+        (this.urlFromApi = ""),
+        (this.itemImg = ""),
+        (this.genimg = ""),
+        this.ListCategorydata();
     },
     openLoading() {
       this.Loading_group = true;
     },
     closeLoading() {
       this.Loading_group = false;
-    
     },
 
-    closeInsertgroup(){
-      this.resetdata()
+    closeInsertgroup() {
+      this.resetdata();
       this.$emit("close", this.dataclose);
     },
     ListSubCategorydata() {
@@ -254,7 +282,7 @@ export default {
       if (this.urlfile === this.img) {
         this.InsertAssetdataNoing();
       } else {
-        this.uploadimage()
+        this.uploadimage();
       }
     },
 
@@ -295,8 +323,8 @@ export default {
       api.InsertAsset(
         payload,
         (result) => {
-          this.asset = result;
-          this.resetdata()
+          this.response = result.response;
+          this.resetdata();
           this.closeLoading();
           this.closeInsertgroup();
         },
@@ -317,8 +345,8 @@ export default {
       api.InsertAsset(
         payload,
         (result) => {
-          this.asset = result;
-          this.resetdata()
+          this.response = result.response;
+          this.resetdata();
           this.closeLoading();
           this.closeInsertgroup();
         },
@@ -326,12 +354,6 @@ export default {
           console.log(error);
         }
       );
-    },
-
-    genbarcode(){
-      this.time = Date();
-      this.barcode = moment(this.time).format("YYMMDDhhmmss");
-      this.barcodest = "NP" + this.barcode;
     },
     ListCategorydata() {
       api.ListCategory(
@@ -346,12 +368,25 @@ export default {
         }
       );
     },
-    testimg() {
-      const formData = new FormData();
+    async testimg()  {
+      try {
+              const formData = new FormData();
       formData.append("file", this.selectedFile);
       formData.append("type", "customer");
+      
       this.imagefile = document.querySelector("#fileUpload");
+   
       this.urlfile = URL.createObjectURL(this.imagefile.files[0]);
+      } catch (error) {
+        console.log(error)
+      }
+     
+
+    },
+    genbarcode() {
+      this.time = Date();
+      this.barcode = moment(this.time).format("YYMMDDhhmmss");
+      this.barcodest = "NP" + this.barcode;
     },
   },
   mounted() {

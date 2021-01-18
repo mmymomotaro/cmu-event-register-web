@@ -1,10 +1,13 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import manageAsset from '../views/Asset/manageAsset.vue'
-import manageCategory from '../views/Category/manageCategory.vue'
-import listAssetitem from '../views/Asset/listAssetitem.vue'
-import manageAssetDamage from '../views/AssetDamage/manageAssetDamage.vue'
+import About from '../views/About.vue'
+import ManageAsset from '../views/admin/Asset/ManageAsset.vue'
+import manageCategory from '../views/admin/Category/manageCategory.vue'
+import listAssetitem from '../views/admin/Asset/listAssetitem.vue'
+import manageAssetDamage from '../views/admin/AssetDamage/ManageAssetDamage.vue'
+import listAssetitemDamage from '../views/admin/AssetDamage/listAssetitemDamage.vue'
+import Dashboard from '../views/admin/Dashboard.vue'
 
 Vue.use(VueRouter)
 
@@ -17,15 +20,12 @@ const routes = [
   {
     path: '/about',
     name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    component: About
   },
   {
-    path: '/manageAsset',
-    name: 'manageAsset',
-    component: manageAsset
+    path: '/ManageAsset',
+    name: 'ManageAsset',
+    component: ManageAsset
   },
   {
     path: '/manageCategory',
@@ -41,6 +41,16 @@ const routes = [
     path: '/manageAssetDamage/',
     name: 'manageAssetDamage',
     component: manageAssetDamage
+  },
+    {
+    path: '/listAssetitemDamage/:id',
+    name: 'listAssetitemDamage',
+    component: listAssetitemDamage
+  },
+      {
+    path: '/Dashboard/',
+    name: 'Dashboard',
+    component: Dashboard
   },
 ]
 
