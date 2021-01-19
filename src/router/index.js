@@ -47,7 +47,7 @@ const routes = [
     name: 'listAssetitemDamage',
     component: listAssetitemDamage
   },
-      {
+  {
     path: '/Dashboard/',
     name: 'Dashboard',
     component: Dashboard

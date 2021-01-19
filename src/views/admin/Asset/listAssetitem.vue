@@ -62,6 +62,16 @@
                             <div v-if="Asset.serial_number === ''">
                               <div>
                                 <v-icon color="black" class="pa-0"> qr_code</v-icon> ไม่มี
+                                <v-progress-circular
+                                  max="10"
+                                  :rotate="360"
+                                  :size="40"
+                                  :width="10"
+                                  :value="Asset.condition"
+                                  color="blue"
+                                >
+                                  {{ value }}
+                                </v-progress-circular>
                               </div>
                             </div>
                             <div v-else>
@@ -170,6 +180,16 @@
                             <div v-if="Asset.serial_number === ''">
                               <div>
                                 <v-icon color="black" class="pa-0"> qr_code</v-icon> ไม่มี
+                                <v-progress-circular
+                                  max="10"
+                                  :rotate="360"
+                                  :size="40"
+                                  :width="10"
+                                  :value="Asset.condition"
+                                  color="yellow"
+                                >
+                                  {{ value }}
+                                </v-progress-circular>
                               </div>
                             </div>
                             <div v-else>
@@ -250,6 +270,7 @@ export default {
       Assetdetail: [],
       headerdata: [],
       clickAssetData: [],
+      condition: 5,
     };
   },
   components: { InsertAssetItem, UpdateAssetItem, DeleteAssetItem },
@@ -302,6 +323,7 @@ export default {
         },
         (result) => {
           this.AssetListitemA = result.data;
+          this.AssetListitemA.condition = this.AssetListitemA.condition * 10;
         },
         (error) => {
           console.log(error);
@@ -315,6 +337,7 @@ export default {
         },
         (result) => {
           this.AssetListitemB = result.data;
+          this.AssetListitemB.condition = this.AssetListitemB.condition * 10;
         },
         (error) => {
           console.log(error);
@@ -358,7 +381,7 @@ export default {
         },
         (result) => {
           this.clickAssetData = result.data;
-          console.log(this.clickAssetData)
+          console.log(this.clickAssetData);
         },
         (error) => {
           console.log(error);

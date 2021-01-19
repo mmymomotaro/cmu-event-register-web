@@ -28,7 +28,7 @@
             required
           ></v-select>
         </v-col>
-        <v-col cols="12" md="12">
+        <v-col cols="12" md="8">
           <v-menu
             v-model="menu2"
             :close-on-content-click="false"
@@ -39,7 +39,7 @@
           >
             <template v-slot:activator="{ on, attrs }">
               <v-text-field
-                v-model="date"
+                v-model="warranty"
                 label="วันสินสุดรับประกัน"
                 prepend-icon="mdi-calendar"
                 readonly
@@ -50,12 +50,26 @@
             <v-date-picker v-model="date" @input="menu2 = false"></v-date-picker>
           </v-menu>
         </v-col>
+        <v-col cols="12" md="4">
+          <v-select
+            color="light-blue darken-3"
+            v-model="statusdata"
+            prepend-icon="build"
+            :items="status"
+            item-text="name"
+            return-object
+            label="สถานะ"
+            required
+          ></v-select>
+        </v-col>
         <v-col cols="12" md="12">
           <v-subheader class="pl-0"> สภาพสินทรัพย์ </v-subheader>
           <v-slider
-            v-model="slider"
+            v-model="condition"
             prepend-icon="build"
             :thumb-size="24"
+            max="10"
+            min="0"
             thumb-label="always"
           ></v-slider>
         </v-col>
@@ -105,10 +119,9 @@ export default {
   props: ["Asset"],
   data() {
     return {
+      switch1: true,
       headerdata: [],
       SerialNumber: "",
-      statusAssettiem: 1,
-      availableAssetitem: 1,
       e1: 1,
       Insert_group: false,
       Error_group: false,
@@ -117,21 +130,31 @@ export default {
       Locationdata: "",
       Location: [],
       response: "",
-      date: new Date().toISOString().substr(0, 10),
-      modal: false,
+      warranty: new Date().toISOString().substr(0, 10),
       menu2: false,
-      slider: 50,
+      condition: 10,
+      status: [
+        { id: 1, name: "ดี" },
+        { id: 2, name: "เสีย" },
+      ],
+      statusdata: [],
     };
   },
   components: { PopupInsert, PopupErrorInputiden, PopupResponError },
   methods: {
     checkdata() {
       if (this.Locationdata === "") {
-        this.Error_group = true;
-        setTimeout(() => {
-          this.Error_group = false;
-        }, 2000);
-      } else {
+        if (this.statusdata === "") {
+          this.Error_group = true;
+          setTimeout(() => {
+            this.Error_group = false;
+          }, 2000);
+        } 
+          // this.Error_group = true;
+          // setTimeout(() => {
+          //   this.Error_group = false;
+          // }, 2000);
+        
         this.InsertAssetItemdata();
       }
     },
@@ -169,9 +192,12 @@ export default {
         {
           asset_id: parseInt(this.Asset),
           location_id: this.Locationdata.id,
-          status: this.statusAssettiem,
-          available: this.availableAssetitem,
+          status: this.statusdata.id,
+          available: 1,
           serial_number: this.SerialNumber,
+          conditions: this.condition,
+          warranty_date: this.warranty,
+          detail: this.itemdescription,
         },
         (result) => {
           this.response = result.response;
