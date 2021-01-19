@@ -351,6 +351,9 @@ export default {
         },
         (result) => {
           this.headerdata = result.data;
+          if(this.headerdata.qty_available == 0){
+            this.openInsertAssetItem()
+          }
         },
         (error) => {
           console.log(error);
@@ -390,9 +393,9 @@ export default {
     },
   },
   mounted() {
-    this.HaederAssetdata();
-    this.ListAssetItemA();
-    this.ListAssetItemB();
+      this.HaederAssetdata();
+      this.ListAssetItemA();
+      this.ListAssetItemB();
   },
 };
 </script>

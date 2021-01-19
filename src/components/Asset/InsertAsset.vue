@@ -199,6 +199,7 @@ export default {
   name: "InsertAsset",
   data() {
     return {
+      AssetdataInsertitem: null,
       dataclose: false,
       Insert_group: false,
       ErrorInputiden_group: false,
@@ -263,7 +264,8 @@ export default {
 
     closeInsertgroup() {
       this.resetdata();
-      this.$emit("close", this.dataclose);
+      console.log(this.AssetdataInsertitem)
+      this.$emit("close", this.dataclose ,this.AssetdataInsertitem);
     },
     ListSubCategorydata() {
       api.ListSubCategory(
@@ -324,6 +326,7 @@ export default {
         payload,
         (result) => {
           this.response = result.response;
+          this.AssetdataInsertitem = result.data.id
           this.resetdata();
           this.closeLoading();
           this.closeInsertgroup();
@@ -346,6 +349,7 @@ export default {
         payload,
         (result) => {
           this.response = result.response;
+          this.AssetdataInsertitem = result.data.id
           this.resetdata();
           this.closeLoading();
           this.closeInsertgroup();

@@ -88,7 +88,7 @@
           </v-btn>
         </v-col>
         <v-col cols="6" md="6" class="pl-1">
-          <v-btn block outlined color="primary" height="2.5rem" @click="checkdata()">
+          <v-btn block outlined color="primary" height="2.5rem" @click="InsertAssetItemdata()">
             ยืนยัน
           </v-btn>
         </v-col>
@@ -142,22 +142,6 @@ export default {
   },
   components: { PopupInsert, PopupErrorInputiden, PopupResponError },
   methods: {
-    checkdata() {
-      if (this.Locationdata === "") {
-        if (this.statusdata === "") {
-          this.Error_group = true;
-          setTimeout(() => {
-            this.Error_group = false;
-          }, 2000);
-        } 
-          // this.Error_group = true;
-          // setTimeout(() => {
-          //   this.Error_group = false;
-          // }, 2000);
-        
-        this.InsertAssetItemdata();
-      }
-    },
     ListLocationAssetItemdata() {
       api.LocationAssetItem(
         {
@@ -188,6 +172,8 @@ export default {
     },
     InsertAssetItemdata() {
       this.openInsert();
+      console.log('A')
+      console.log(this.SerialNumber,this.Locationdata.id,this.warranty,this.condition,this.statusdata.id)
       api.InsertAssetItem(
         {
           asset_id: parseInt(this.Asset),
@@ -200,13 +186,14 @@ export default {
           detail: this.itemdescription,
         },
         (result) => {
+          console.log('B')
           this.response = result.response;
           if (this.response === "success") {
-            console.log("B");
+            console.log('C')
             this.closeInsert();
             this.closeInsertgroup();
           } else {
-            console.log("C");
+            console.log('D')
             this.closeInsert();
             this.ErrorRespon_group = true;
             setTimeout(() => {

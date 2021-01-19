@@ -255,9 +255,10 @@ export default {
       this.Delete_group = true;
     },
 
-    closeInsert(value) {
+    closeInsert(value , assID) {
       this.Insert_group = value;
       this.ListAssetdata();
+      this.golistAssetitem(assID)
     },
     closeUpdate(value) {
       this.Update_group = value;
