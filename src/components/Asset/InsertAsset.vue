@@ -22,11 +22,10 @@
             <v-card flat>
               <v-form>
                 <v-row no-gutters>
-                  <v-col cols="12" sm="12" class="px-2">
+                  <v-col cols="12" md="8" class="px-2">
                     <v-text-field
                       required
                       v-model="assetname"
-                
                       counter
                       maxlength="20"
                       hint="This field uses maxlength attribute"
@@ -34,16 +33,23 @@
                       color="light-blue darken-3"
                     ></v-text-field>
                   </v-col>
-
+                  <v-col cols="12" md="4" class="px-2">
+                    <v-select
+                      color="light-blue darken-3"
+                      v-model="typeSNdata"
+                      :items="typeSN"
+                      item-text="name"
+                      return-object
+                      label="ซีเรียวโค้ด"
+                      required
+                    ></v-select>
+                  </v-col>
                   <v-col cols="12" sm="6" class="px-2">
                     <v-select
                       color="light-blue darken-3"
                       v-model="Categorydata"
                       :items="CategoryList"
                       item-text="name"
-                      :error-messages="errors"
-                    
-                  
                       return-object
                       label="หมวดหมู่"
                       @change="ListSubCategorydata()"
@@ -56,9 +62,7 @@
                       v-model="SubCategorydata"
                       :items="SubCategoryList"
                       item-text="sname"
-                      :error-messages="errors"
                       return-object
-                   
                       label="ประเภท"
                       required
                     ></v-select>
@@ -77,19 +81,25 @@
                 </v-row>
               </v-form>
             </v-card>
-            <v-btn text @click="closeInsertgroup()"> ยกเลิก </v-btn>
+            <v-btn text @click="cancelInsertgroup()"> ยกเลิก </v-btn>
             <v-btn class="botton white--text" @click="e1 = 2"> ถัดไป </v-btn>
           </v-stepper-content>
-
           <v-stepper-content step="2" class="pa-2">
             <v-card flat>
               <v-form>
                 <v-row no-gutters>
                   <v-col cols="12" sm="6" class="px-2">
-                    <!-- <input type="file" @change="fileChange" /> -->
-                   
-                    <img height="200px" width="200px" :src="urlfile == '' ? 'https://firebasestorage.googleapis.com/v0/b/np-storage-it.appspot.com/o/no-image.jpg?alt=media':urlfile" @click="$refs.fileUpload.click()" />
-                  <input
+                    <img
+                      height="200px"
+                      width="200px"
+                      :src="
+                        urlfile == ''
+                          ? 'https://firebasestorage.googleapis.com/v0/b/np-storage-it.appspot.com/o/no-image.jpg?alt=media'
+                          : urlfile
+                      "
+                      @click="$refs.fileUpload.click()"
+                    />
+                    <input
                       color="light-blue darken-3"
                       type="file"
                       class="form-control-file"
@@ -98,7 +108,6 @@
                       hidden
                       @change="testimg"
                     />
-                 
                   </v-col>
                   <v-col cols="12" sm="6" class="px-2">
                     <v-text-field
@@ -111,12 +120,12 @@
                       color="light-blue darken-3"
                     ></v-text-field>
                     <v-row class="pa-0 ma-0">
-                      <v-col cols="12" class="pa-0 ma-0">
+                      <v-col cols="12" class="pa-0 ma-0" style="height: 200px">
                         <v-btn class="botton white--text" block @click="genbarcode()"
                           >Barcode</v-btn
                         >
                         <barcode
-                        v-if="barcodest != ''"
+                          v-if="barcodest != ''"
                           v-model="barcodest"
                           :options="{ displayValue: false }"
                         ></barcode>
@@ -126,11 +135,9 @@
                 </v-row>
               </v-form>
             </v-card>
-
             <v-btn text @click="e1 = 1"> ย้อนกลับ </v-btn>
             <v-btn class="botton white--text" @click="e1 = 3"> ถัดไป </v-btn>
           </v-stepper-content>
-
           <v-stepper-content step="3" class="pa-2">
             <v-card flat>
               <v-form>
@@ -150,7 +157,15 @@
                   <v-col cols="12" sm="6" class="px-2 py-2">
                     รูป:
                     <div>
-                      <img height="200px" width="200px" :src="urlfile == '' ? 'https://firebasestorage.googleapis.com/v0/b/np-storage-it.appspot.com/o/no-image.jpg?alt=media':urlfile" />
+                      <img
+                        height="200px"
+                        width="200px"
+                        :src="
+                          urlfile == ''
+                            ? 'https://firebasestorage.googleapis.com/v0/b/np-storage-it.appspot.com/o/no-image.jpg?alt=media'
+                            : urlfile
+                        "
+                      />
                     </div>
                   </v-col>
                   <v-col cols="12" sm="6" class="px-2 py-2">
@@ -158,7 +173,7 @@
                     <div>
                       <barcode
                         v-model="barcodest"
-                         v-if="barcodest != ''"
+                        v-if="barcodest != ''"
                         :options="{ displayValue: false }"
                       ></barcode>
                     </div>
@@ -167,7 +182,7 @@
               </v-form>
             </v-card>
             <v-btn text @click="e1 = 2"> ย้อนกลับ </v-btn>
-            <v-btn class="botton white--text" type="submit" @click="checkimgdata()">
+            <v-btn class="botton white--text" type="submit" @click="checkdataUpload()">
               เพิ่มข้อมูล
             </v-btn>
           </v-stepper-content>
@@ -224,6 +239,11 @@ export default {
       urlFromApi: "",
       itemImg: "",
       genimg: "",
+      typeSN: [
+        { id: 1, name: "มี" },
+        { id: 0, name: "ไม่มี" },
+      ],
+      typeSNdata: [],
     };
   },
   components: { PopupInsert, PopupErrorInputiden, PopupResponError },
@@ -253,7 +273,28 @@ export default {
         (this.urlFromApi = ""),
         (this.itemImg = ""),
         (this.genimg = ""),
+        (this.typeSN = [
+          { id: 1, name: "มี" },
+          { id: 0, name: "ไม่มี" },
+        ]),
+        (this.typeSNdata = []),
         this.ListCategorydata();
+    },
+    checkdataUpload() {
+      if (
+        this.assetname == "" ||
+        this.typeSNdata == "" ||
+        this.Categorydata == "" ||
+        this.SubCategorydata == "" ||
+        this.barcodest == ""
+      ) {
+        this.ErrorInputiden_group = true;
+        setTimeout(() => {
+          this.ErrorInputiden_group = false;
+        }, 2000);
+      } else {
+        this.checkimgdata();
+      }
     },
     openLoading() {
       this.Loading_group = true;
@@ -261,11 +302,13 @@ export default {
     closeLoading() {
       this.Loading_group = false;
     },
-
+    cancelInsertgroup() {
+      this.$emit("cancel", this.dataclose);
+    },
     closeInsertgroup() {
       this.resetdata();
-      console.log(this.AssetdataInsertitem)
-      this.$emit("close", this.dataclose ,this.AssetdataInsertitem);
+      console.log(this.AssetdataInsertitem);
+      this.$emit("close", this.dataclose, this.AssetdataInsertitem);
     },
     ListSubCategorydata() {
       api.ListSubCategory(
@@ -321,12 +364,13 @@ export default {
         barcode: this.barcodest,
         description: this.description,
         url: this.urlFromApi,
+        types: this.typeSN.id,
       };
       api.InsertAsset(
         payload,
         (result) => {
           this.response = result.response;
-          this.AssetdataInsertitem = result.data.id
+          this.AssetdataInsertitem = result.data.id;
           this.resetdata();
           this.closeLoading();
           this.closeInsertgroup();
@@ -344,12 +388,13 @@ export default {
         barcode: this.barcodest,
         description: this.description,
         url: this.img,
+        types: this.typeSN.id,
       };
       api.InsertAsset(
         payload,
         (result) => {
           this.response = result.response;
-          this.AssetdataInsertitem = result.data.id
+          this.AssetdataInsertitem = result.data.id;
           this.resetdata();
           this.closeLoading();
           this.closeInsertgroup();
@@ -372,20 +417,18 @@ export default {
         }
       );
     },
-    async testimg()  {
+    async testimg() {
       try {
-              const formData = new FormData();
-      formData.append("file", this.selectedFile);
-      formData.append("type", "customer");
-      
-      this.imagefile = document.querySelector("#fileUpload");
-   
-      this.urlfile = URL.createObjectURL(this.imagefile.files[0]);
-      } catch (error) {
-        console.log(error)
-      }
-     
+        const formData = new FormData();
+        formData.append("file", this.selectedFile);
+        formData.append("type", "customer");
 
+        this.imagefile = document.querySelector("#fileUpload");
+
+        this.urlfile = URL.createObjectURL(this.imagefile.files[0]);
+      } catch (error) {
+        console.log(error);
+      }
     },
     genbarcode() {
       this.time = Date();

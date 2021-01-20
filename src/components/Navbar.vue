@@ -33,14 +33,14 @@
               </v-list-item>
 
               <v-list-item @click="$router.push('/manageAsset')">
-                <v-list-item-icon><v-icon>inventory</v-icon></v-list-item-icon>
+                <v-list-item-icon><v-icon> work</v-icon></v-list-item-icon>
                 <v-list-item-content>
                   <v-list-item-title>จัดการข้อมูลสินทรัพย์</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
 
               <v-list-item @click="$router.push('/manageAssetDamage')">
-                <v-list-item-icon><v-icon>inventory</v-icon></v-list-item-icon>
+                <v-list-item-icon><v-icon>work_off</v-icon></v-list-item-icon>
                 <v-list-item-content>
                   <v-list-item-title>จัดการข้อมูลสินทรัพย์เสียหาย</v-list-item-title>
                 </v-list-item-content>
@@ -61,7 +61,7 @@
               </v-list-item>
 
               <v-list-item>
-                <v-list-item-icon><v-icon>content_paste</v-icon></v-list-item-icon>
+                <v-list-item-icon><v-icon>construction</v-icon></v-list-item-icon>
                 <v-list-item-content>
                   <v-list-item-title>รายงานสินทรัพย์เสียหาย</v-list-item-title>
                 </v-list-item-content>

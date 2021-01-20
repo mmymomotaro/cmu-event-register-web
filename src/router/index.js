@@ -3,10 +3,10 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import About from '../views/About.vue'
 import ManageAsset from '../views/admin/Asset/ManageAsset.vue'
-import manageCategory from '../views/admin/Category/manageCategory.vue'
-import listAssetitem from '../views/admin/Asset/listAssetitem.vue'
-import manageAssetDamage from '../views/admin/AssetDamage/ManageAssetDamage.vue'
-import listAssetitemDamage from '../views/admin/AssetDamage/listAssetitemDamage.vue'
+import ManageCategory from '../views/admin/Category/ManageCategory.vue'
+import ListAssetitem from '../views/admin/Asset/listAssetitem.vue'
+import ManageAssetDamage from '../views/admin/AssetDamage/ManageAssetDamage.vue'
+import ListAssetitemDamage from '../views/admin/AssetDamage/listAssetitemDamage.vue'
 import Dashboard from '../views/admin/Dashboard.vue'
 
 Vue.use(VueRouter)
@@ -28,24 +28,24 @@ const routes = [
     component: ManageAsset
   },
   {
-    path: '/manageCategory',
-    name: 'manageCategory',
-    component: manageCategory
+    path: '/ManageCategory',
+    name: 'ManageCategory',
+    component: ManageCategory
   },
   {
-    path: '/listAssetitem/:id',
-    name: 'listAssetitem',
-    component: listAssetitem
+    path: '/ListAssetitem/:id',
+    name: 'ListAssetitem',
+    component: ListAssetitem
   },
     {
-    path: '/manageAssetDamage/',
-    name: 'manageAssetDamage',
-    component: manageAssetDamage
+    path: '/ManageAssetDamage/',
+    name: 'ManageAssetDamage',
+    component: ManageAssetDamage
   },
     {
-    path: '/listAssetitemDamage/:id',
-    name: 'listAssetitemDamage',
-    component: listAssetitemDamage
+    path: '/ListAssetitemDamage/:id',
+    name: 'ListAssetitemDamage',
+    component: ListAssetitemDamage
   },
   {
     path: '/Dashboard/',

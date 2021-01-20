@@ -5,7 +5,7 @@
     <v-card>
       <v-row no-gutters class="pa-3">
         <v-col cols="12" md="6"  class="pa-1" >
-          <v-btn block outlined height="2.5rem" @click="closeDeletegroup()"> ยกเลิก </v-btn>
+          <v-btn block outlined height="2.5rem" @click="cancelDeletegroup()"> ยกเลิก </v-btn>
         </v-col>
         <v-col cols="12" md="6" class="pa-1">
           <v-btn block outlined color="red" height="2.5rem" @click="DeleteAssetItemdata()"> ยืนยัน </v-btn>
@@ -40,7 +40,10 @@ export default {
   components: {PopupDelete},
   methods: {
   closeDeletegroup(){
-      this.$emit("close", this.dataclose,this.AssetItem.asset_id);
+      this.$emit("close", this.dataclose);
+    },
+      cancelDeletegroup(){
+      this.$emit("cancel", this.dataclose);
     },
     openDelete() {
       this.Delete_group = true;

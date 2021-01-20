@@ -5,10 +5,19 @@
         <v-row no-gutters>
           <v-col cols="12" md="12" style="font-size: 1.7rem" class="text-center">
             <v-row no-gutters>
+
               <v-col cols="12" md="3">จัดการสินทรัพย์</v-col>
               <v-col cols="2" md="1" class="px-1">
-                <div class="text-center">
-                  <v-menu bottom :offset-y="offset" :nudge-width="200">
+                <div class="text-left">
+                  <v-menu
+                    bottom
+                    :offset-y="offset"
+                    :nudge-width="200"
+                    transition="slide-y-transition"
+                  >
+                  <div class="text-left">
+
+                  </div>
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
                         fab
@@ -16,33 +25,42 @@
                         small
                         v-bind="attrs"
                         v-on="on"
-                        color="grey"
-                        @click="ClickAssetItemDetaildata(Asset)"
+                        @click="ListCateAndsubcate()"
                       >
                         <v-icon color="black"> inventory </v-icon>
                       </v-btn>
-                      
                     </template>
                     <v-list>
-                      <v-list-item v-for="cag in CategoryList" :key="cag.id">
-                        <v-menu bottom :nudge-width="100" :offset-x="offset">
-                          <template v-slot:activator="{ on, subattrs }">
-                            <v-list-item-title
-                              v-bind="subattrs"
+                      <v-list-item v-for="cate in CategoryList" :key="cate.id">
+                        <v-menu
+                          open-on-hover
+                          bottom
+                          :offset-x="offset"
+                          :nudge-width="100"
+                          transition="slide-x-transition"
+                        >
+                          <template v-slot:activator="{ on, attrs }">
+                            <v-btn
+                              color="primary"
+                              dark
+                              v-bind="attrs"
                               v-on="on"
-                              @click="
-                                ListSubCategorydata(cag.id, val),
-                                  SearchAssetBycatdata(cag)
-                              "
-                              >{{ cag.name }}</v-list-item-title
+                              block
+                              text
+                              @click="SearchAssetBycatdata(cate)"
                             >
+                              {{ cate.name }}
+
+                            </v-btn>
                           </template>
                           <v-list>
-                            <v-list-item v-for="subcat in SubCategoryList" :key="subcat">
-                              <v-list-item-title
-                                @click="SearchAssetBySubcatdata(subcat)"
-                                >{{ subcat.sname }}</v-list-item-title
-                              >
+                            <v-list-item v-for="(sub, id) in cate.subs" :key="id">
+                              <v-list-item-title>
+                                <v-btn color="success" block text
+                                @click="SearchAssetBySubcatdata(sub)"
+                                >
+                                  {{ sub.sub_category_name}}
+                                </v-btn></v-list-item-title>
                             </v-list-item>
                           </v-list>
                         </v-menu>
@@ -71,7 +89,6 @@
           <span style="font-size: 1.2rem">
             {{ search != "" ? "ผลลัพธ์ :" : "สินทรัพย์ทั้งหมด" }} {{ search }}</span
           >
-        <!-- <v-breadcrumbs class="pa-0" :items="items"></v-breadcrumbs> -->
         </v-col>
         <v-col cols="12" md="2" class="px-1">
           <v-btn
@@ -98,7 +115,10 @@
             <v-card class="mx-auto" max-width="400">
               <v-img class="white--text align-end" height="200px" :src="AssList.url">
               </v-img>
-              <v-card-text class="text--primary pa-2" @click="golistAssetitem(AssList.id)">
+              <v-card-text
+                class="text--primary pa-2"
+                @click="golistAssetitem(AssList.id)"
+              >
                 <div style="font-size: 16px; font-weight: bold; height: 50px">
                   {{ AssList.name }}
                 </div>
@@ -146,7 +166,9 @@
                   >
                 </v-col>
                 <v-col cols="12" md="6" class="pa-1">
-                  <v-btn color="red" text block @click="openDeleteAsset(AssList)">ลบ</v-btn>
+                  <v-btn color="red" text block @click="openDeleteAsset(AssList)"
+                    >ลบ</v-btn
+                  >
                 </v-col>
               </v-row>
             </v-card>
@@ -213,19 +235,20 @@ export default {
       SubCategoryList: [],
       items: [
         {
-          text: "จัดการสินทรัพย์",
-          disabled: false,
-          href: "breadcrumbs_dashboard",
+          id: 1,
+          name: "คอม",
+          sub_cate: [
+            { id: 1, sname: "เมาส์" },
+            { id: 1, sname: "จอ" },
+          ],
         },
-        {
-          text: "Link 1",
-          disabled: false,
-          href: "breadcrumbs_link_1",
-        },
-        {
-          text: "Link 2",
-          disabled: true,
-          href: "breadcrumbs_link_2",
+                {
+          id: 1,
+          name: "Paybox",
+          sub_cate: [
+            { id: 1, sname: "ตู้กาแฟ" },
+            { id: 1, sname: "กล่องเก็บเงิน" },
+          ],
         },
       ],
       offset: true,
@@ -255,10 +278,10 @@ export default {
       this.Delete_group = true;
     },
 
-    closeInsert(value , assID) {
+    closeInsert(value, assID) {
       this.Insert_group = value;
       this.ListAssetdata();
-      this.golistAssetitem(assID)
+      this.golistAssetitem(assID);
     },
     closeUpdate(value) {
       this.Update_group = value;
@@ -282,26 +305,13 @@ export default {
     golistAssetitem(val) {
       this.$router.push("listAssetitem/" + val);
     },
-    ListCategorydata() {
-      api.ListCategory(
+    ListCateAndsubcate() {
+      api.SerachAssetCatSub(
         {
           id: null,
         },
         (result) => {
           this.CategoryList = result.data;
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-    },
-    ListSubCategorydata(val) {
-      api.ListSubCategory(
-        {
-          id: val,
-        },
-        (result) => {
-          this.SubCategoryList = result.data;
         },
         (error) => {
           console.log(error);
@@ -328,6 +338,7 @@ export default {
           keyword: val,
           active: 1,
           limit: 25,
+          status: 1,
         },
         (result) => {
           this.AssetList = result.data;
@@ -338,10 +349,12 @@ export default {
       );
     },
     SearchAssetBycatdata(val) {
+      // console.log(val)
       api.SerachAssetBycat(
         {
           category_id: val.id,
           sub_category_id: null,
+          status: 1,
         },
         (result) => {
           this.AssetList = result.data;
@@ -352,10 +365,12 @@ export default {
       );
     },
     SearchAssetBySubcatdata(val) {
+
       api.SerachAssetBycat(
         {
           category_id: val.category_id,
           sub_category_id: val.id,
+          status: 1,
         },
         (result) => {
           this.AssetList = result.data;
@@ -380,7 +395,7 @@ export default {
     },
   },
   mounted() {
-    this.ListCategorydata();
+    this.ListCateAndsubcate();
     this.ListAssetdata();
   },
 };
@@ -391,8 +406,7 @@ export default {
   font-size: 1.25rem;
   background: linear-gradient(90.75deg, #00b9f8 5.43%, #3780ee 84.26%), #c4c4c4;
 }
-.bthover:hover{
-  border-bottom:1px;
-
+.bthover:hover {
+  border-bottom: 1px;
 }
 </style>

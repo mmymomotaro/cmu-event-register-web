@@ -12,7 +12,7 @@
               <v-icon color="black">view_week</v-icon> {{ headerdata.barcode }}
             </div>
           </v-col>
-           <v-col cols="12" md="3" class="pa-2">
+          <v-col cols="12" md="3" class="pa-2">
             <v-hover>
               <v-btn
                 block
@@ -28,99 +28,110 @@
     </v-card>
 
     <v-container grid-list-xs>
-        <v-row class="ma-2">
-          <v-expansion-panels style="justify-content: left">
-            <v-col
-              cols="12"
-              md="4"
-              class="pa-1"
-              v-for="(Asset, i) in AssetListitem"
-              :key="i"
-            >
-              <v-expansion-panel>
-                <v-row align="center" no-gutters>
-                  <v-col cols="10" md="10">
-                    <v-expansion-panel-header
-                      class="pa-0 pl-5"
-                      style="font-size: 1rem; border-left: solid red 3px"
-                      @click="ListAssetItemDetaildata(Asset)"
-                    >
-                      <div v-if="Asset.serial_number === ''">
-                        <div>
-                          <v-icon color="black" class="pa-0"> qr_code</v-icon> ไม่มี
-                        </div>
+      <v-row class="ma-2">
+        <v-expansion-panels style="justify-content: left">
+          <v-col
+            cols="12"
+            md="4"
+            class="pa-1"
+            v-for="(Asset, i) in AssetListitem"
+            :key="i"
+          >
+            <v-expansion-panel>
+              <v-row align="center" no-gutters>
+                <v-col cols="10" md="10">
+                  <v-expansion-panel-header
+                    class="pa-0 pl-5"
+                    style="font-size: 1rem; border-left: solid red 3px"
+                    @click="ListAssetItemDetaildata(Asset)"
+                  >
+                    <div v-if="Asset.serial_number === ''">
+                      <div>
+                        <v-icon color="black" class="pa-0"> qr_code</v-icon> ไม่มี
                       </div>
-                      <div v-else>
-                        <v-icon color="black" class="pa-0"> qr_code</v-icon>
-                        {{ Asset.serial_number }}
-                      </div>
-                    </v-expansion-panel-header>
-                  </v-col>
-                  <v-col cols="1" md="1">
-                    <v-menu>
-                      <template v-slot:activator="{ on: menu, attrs }">
-                        <v-tooltip bottom>
-                          <template v-slot:activator="{ on: tooltip }">
-                            <v-btn
-                              fab
-                              text
-                              small
-                              color="grey"
-                              v-bind="attrs"
-                              v-on="{ ...tooltip, ...menu }"
-                              @click="ClickAssetItemDetaildata(Asset)"
-                            >
-                              <v-icon color="black"> settings </v-icon>
-                            </v-btn>
-                          </template>
-                          <span>แก้ไข</span>
-                        </v-tooltip>
-                      </template>
-                      <v-list>
-                        <v-list-item>
+                    </div>
+                    <div v-else>
+                      <v-icon color="black" class="pa-0"> qr_code</v-icon>
+                      {{ Asset.serial_number }}
+                    </div>
+                  </v-expansion-panel-header>
+                </v-col>
+                <v-col cols="1" md="2">
+                  <v-progress-circular
+                    max="10"
+                    :rotate="360"
+                    :size="20"
+                    :width="4"
+                    :value="Asset.conditions * 10"
+                    color="red darken-1"
+                  >
+                    {{ value }}
+                  </v-progress-circular>
+                  <v-menu>
+                    <template v-slot:activator="{ on: menu, attrs }">
+                      <v-tooltip bottom>
+                        <template v-slot:activator="{ on: tooltip }">
                           <v-btn
-                            color="blue lighten-1"
-                            block
-                            outlined
-                            @click="openUpdateAssetItem(clickAssetData)"
+                            fab
+                            text
+                            small
+                            color="grey"
+                            v-bind="attrs"
+                            v-on="{ ...tooltip, ...menu }"
+                            @click="ClickAssetItemDetaildata(Asset)"
                           >
-                            <v-icon>create</v-icon></v-btn
-                          >
-                        </v-list-item>
-                        <v-list-item>
-                          <v-btn
-                            color="red"
-                            outlined
-                            block
-                            @click="openDeleteAssetItem(clickAssetData)"
-                          >
-                            <v-icon>delete</v-icon></v-btn
-                          >
-                        </v-list-item>
-                      </v-list>
-                    </v-menu>
-                  </v-col>
-                </v-row>
+                            <v-icon color="black"> settings </v-icon>
+                          </v-btn>
+                        </template>
+                        <span>แก้ไข</span>
+                      </v-tooltip>
+                    </template>
+                    <v-list>
+                      <v-list-item>
+                        <v-btn
+                          color="blue lighten-1"
+                          block
+                          outlined
+                          @click="openUpdateAssetItem(clickAssetData)"
+                        >
+                          <v-icon>create</v-icon></v-btn
+                        >
+                      </v-list-item>
+                      <v-list-item>
+                        <v-btn
+                          color="red"
+                          outlined
+                          block
+                          @click="openDeleteAssetItem(clickAssetData)"
+                        >
+                          <v-icon>delete</v-icon></v-btn
+                        >
+                      </v-list-item>
+                    </v-list>
+                  </v-menu>
+                </v-col>
+              </v-row>
 
-                <v-expansion-panel-content>
-                  <v-row class="pt-4">
-                    <v-col cols="12" sm="6" md="6" class="pa-1">
-                      <v-icon color="blue">location_on</v-icon>{{ Assetdetail.location }}
-                    </v-col>
-                    <v-col cols="12" sm="6" md="6" class="pa-1">
-                      <v-icon color="blue">person</v-icon>
-                    </v-col>
-                    <v-col cols="12" class="pa-1"> </v-col>
-                  </v-row>
-                </v-expansion-panel-content>
-              </v-expansion-panel>
-            </v-col>
-          </v-expansion-panels>
-        </v-row>
+              <v-expansion-panel-content>
+                <v-row class="pt-4">
+                  <v-col cols="12" sm="6" md="6" class="pa-1">
+                    <v-icon color="red darken-1">location_on</v-icon
+                    >{{ Assetdetail.location }}
+                  </v-col>
+                  <v-col cols="12" sm="6" md="6" class="pa-1">
+                    <v-icon color="red darken-1">person</v-icon>
+                  </v-col>
+                  <v-col cols="12" class="pa-1"> </v-col>
+                </v-row>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-col>
+        </v-expansion-panels>
+      </v-row>
     </v-container>
 
     <v-dialog transition="dialog-top-transition" max-width="900" v-model="Insert_group">
-      <InsertAssetItem
+      <InsertAssetItemDamage
         :Asset="group_data"
         @close="closeInsertAssetItem"
         @cancel="cancelInsert"
@@ -128,7 +139,7 @@
     </v-dialog>
 
     <v-dialog transition="dialog-top-transition" max-width="900" v-model="Update_group">
-      <UpdateAssetItem
+      <UpdateAssetItemDamage
         :AssetItem="group_data"
         @close="closeUpdateAssetItem"
         @cancel="cancelUpdate"
@@ -136,7 +147,7 @@
     </v-dialog>
 
     <v-dialog transition="dialog-top-transition" max-width="500" v-model="Delete_group">
-      <DeleteAssetItem
+      <DeleteAssetItemDamage
         :AssetItem="group_data"
         @close="closeDeleteAssetItem"
         @cancel="cancelDelete"
@@ -147,9 +158,9 @@
 
 <script>
 import moment from "moment";
-import InsertAssetItem from "../../../components/AssetItem/InsertAssetItem.vue";
-import UpdateAssetItem from "../../../components/AssetItem/UpdateAssetItem.vue";
-import DeleteAssetItem from "../../../components/AssetItem/DeleteAssetItem.vue";
+import InsertAssetItemDamage from "../../../components/AssetItemDamage/InsertAssetItemDamage.vue";
+import UpdateAssetItemDamage from "../../../components/AssetItemDamage/UpdateAssetItemDamage.vue";
+import DeleteAssetItemDamage from "../../../components/AssetItemDamage/DeleteAssetItemDamage.vue";
 import api from "../../../services/asset";
 export default {
   name: "listAssetitem",
@@ -168,7 +179,7 @@ export default {
       clickAssetData: [],
     };
   },
-  components: { InsertAssetItem, UpdateAssetItem, DeleteAssetItem },
+  components: { InsertAssetItemDamage, UpdateAssetItemDamage, DeleteAssetItemDamage },
   methods: {
     openInsertAssetItem(val) {
       this.group_data = val;

@@ -39,18 +39,6 @@
           </v-row>
         </v-col>
       </v-row>
-      <!-- <v-row no-gutters>
-        <v-col cols="6" md="6" class="pr-1">
-          <v-btn block outlined height="2.5rem" @click="cancelDetailgroup()">
-            ยกเลิก
-          </v-btn>
-        </v-col>
-        <v-col cols="6" md="6" class="pl-1">
-          <v-btn block outlined color="primary" height="2.5rem" @click="checkdata()">
-            ยืนยัน
-          </v-btn>
-        </v-col>
-      </v-row> -->
     </v-card>
   </div>
 </template>

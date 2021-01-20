@@ -27,8 +27,9 @@
             label="สถานที่เก็บ"
             required
           ></v-select>
+          {{Locationdata}}
         </v-col>
-        <v-col cols="12" md="8">
+        <v-col cols="12" md="12">
           <v-menu
             v-model="menu2"
             :close-on-content-click="false"
@@ -41,7 +42,7 @@
               <v-text-field
                 v-model="warranty"
                 label="วันสินสุดรับประกัน"
-                prepend-icon="mdi-calendar"
+                prepend-icon="security"
                 readonly
                 v-bind="attrs"
                 v-on="on"
@@ -49,18 +50,6 @@
             </template>
             <v-date-picker v-model="date" @input="menu2 = false"></v-date-picker>
           </v-menu>
-        </v-col>
-        <v-col cols="12" md="4">
-          <v-select
-            color="light-blue darken-3"
-            v-model="statusdata"
-            prepend-icon="build"
-            :items="status"
-            item-text="name"
-            return-object
-            label="สถานะ"
-            required
-          ></v-select>
         </v-col>
         <v-col cols="12" md="12">
           <v-subheader class="pl-0"> สภาพสินทรัพย์ </v-subheader>
@@ -88,7 +77,13 @@
           </v-btn>
         </v-col>
         <v-col cols="6" md="6" class="pl-1">
-          <v-btn block outlined color="primary" height="2.5rem" @click="InsertAssetItemdata()">
+          <v-btn
+            block
+            outlined
+            color="primary"
+            height="2.5rem"
+            @click="checkdataUpload()"
+          >
             ยืนยัน
           </v-btn>
         </v-col>
@@ -99,7 +94,7 @@
       <PopupInsert />
     </v-dialog>
 
-    <v-dialog max-width="450" v-model="Error_group">
+    <v-dialog max-width="450" v-model="ErrorInputiden_group">
       <PopupErrorInputiden />
     </v-dialog>
 
@@ -124,7 +119,7 @@ export default {
       SerialNumber: "",
       e1: 1,
       Insert_group: false,
-      Error_group: false,
+      ErrorInputiden_group: false,
       ErrorRespon_group: false,
       dataclose: false,
       Locationdata: "",
@@ -133,15 +128,17 @@ export default {
       warranty: new Date().toISOString().substr(0, 10),
       menu2: false,
       condition: 10,
-      status: [
-        { id: 1, name: "ดี" },
-        { id: 2, name: "เสีย" },
-      ],
-      statusdata: [],
     };
   },
   components: { PopupInsert, PopupErrorInputiden, PopupResponError },
   methods: {
+    checkdataUpload() {
+      if (this.Locationdata == "") {
+        this.openError()
+      } else {
+        this.InsertAssetItemdata()
+      }
+    },
     ListLocationAssetItemdata() {
       api.LocationAssetItem(
         {
@@ -172,13 +169,11 @@ export default {
     },
     InsertAssetItemdata() {
       this.openInsert();
-      console.log('A')
-      console.log(this.SerialNumber,this.Locationdata.id,this.warranty,this.condition,this.statusdata.id)
       api.InsertAssetItem(
         {
           asset_id: parseInt(this.Asset),
           location_id: this.Locationdata.id,
-          status: this.statusdata.id,
+          status: 1,
           available: 1,
           serial_number: this.SerialNumber,
           conditions: this.condition,
@@ -186,14 +181,11 @@ export default {
           detail: this.itemdescription,
         },
         (result) => {
-          console.log('B')
           this.response = result.response;
           if (this.response === "success") {
-            console.log('C')
             this.closeInsert();
             this.closeInsertgroup();
           } else {
-            console.log('D')
             this.closeInsert();
             this.ErrorRespon_group = true;
             setTimeout(() => {
@@ -213,10 +205,10 @@ export default {
       this.Insert_group = false;
     },
     openError() {
-      this.Error_group = true;
+      this.ErrorInputiden_group = true;
     },
     closeError() {
-      this.Error_group = false;
+      this.ErrorInputiden_group = false;
     },
     closegroup() {
       this.resetdata();
@@ -231,17 +223,25 @@ export default {
       this.$emit("cancel", this.dataclose);
     },
     resetdata() {
-      (this.headerdata = []),
+      (this.switch1 = true),
+        (this.headerdata = []),
         (this.SerialNumber = ""),
-        (this.statusAssettiem = 1),
-        (this.availableAssetitem = 1),
         (this.e1 = 1),
-        (this.Loading_group = false),
+        (this.Insert_group = false),
         (this.Error_group = false),
+        (this.ErrorRespon_group = false),
         (this.dataclose = false),
         (this.Locationdata = ""),
         (this.Location = []),
-        (this.itemdata = []),
+        (this.response = ""),
+        (this.warranty = new Date().toISOString().substr(0, 10)),
+        (this.menu2 = false),
+        (this.condition = 10),
+        (this.statusdata = []),
+        (this.status = [
+          { id: 0, name: "เสีย" },
+          { id: 1, name: "ดี" },
+        ]),
         this.ListLocationAssetItemdata();
     },
   },

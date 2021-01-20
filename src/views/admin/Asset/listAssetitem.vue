@@ -48,7 +48,7 @@
                     cols="12"
                     md="4"
                     class="pa-1"
-                    v-for="(Asset, i) in AssetListitemA"
+                    v-for="(AssetA, i) in AssetListitemA"
                     :key="i"
                   >
                     <v-expansion-panel>
@@ -57,21 +57,105 @@
                           <v-expansion-panel-header
                             class="pa-0 pl-5"
                             style="font-size: 1rem; border-left: solid blue 3px"
+                            @click="ListAssetItemDetaildata(AssetA)"
+                          >
+                            <div v-if="AssetA.serial_number === ''">
+                              <div>
+                                <v-icon color="black" class="pa-0"> qr_code</v-icon> ไม่มี
+                              </div>
+                            </div>
+                            <div v-else>
+                              <v-icon color="black" class="pa-0"> qr_code</v-icon>
+                              {{ AssetA.serial_number }}
+                            </div>
+                          </v-expansion-panel-header>
+                        </v-col>
+                        <v-col cols="1" md="2">
+                          <v-progress-circular
+                            max="10"
+                            :rotate="360"
+                            :size="20"
+                            :width="4"
+                            :value="AssetA.conditions * 10"
+                            color="blue"
+                          >
+                            {{ value }}
+                          </v-progress-circular>
+
+                          <v-tooltip bottom>
+                            <template v-slot:activator="{ on: tooltip }">
+                              <v-btn
+                                fab
+                                text
+                                small
+                                color="grey"
+                                v-bind="attrs"
+                                v-on="{ ...tooltip, ...menu }"
+                                @click="ClickAssetItemDetaildata(AssetA)"
+                              >
+                                <v-icon color="black"> article </v-icon>
+                              </v-btn>
+                            </template>
+                            <span>ดูรายละเอียด</span>
+                          </v-tooltip>
+                        </v-col>
+                      </v-row>
+
+                      <v-expansion-panel-content>
+                        <v-row class="pt-4">
+                          <v-col cols="12" sm="6" md="6" class="pa-1">
+                            <v-icon color="blue">location_on</v-icon
+                            >{{ Assetdetail.location }}
+                          </v-col>
+                          <v-col cols="12" sm="6" md="6" class="pa-1">
+                            <v-icon color="blue">event</v-icon>
+                            {{ Assetdetail.update_at }}
+                          </v-col>
+                          <v-col cols="12" class="pa-1"> <v-btn color="red" class="white--text" block @click="changstatus(Assetdetail.id)">เสีย</v-btn></v-col>
+                        </v-row>
+                      </v-expansion-panel-content>
+                    </v-expansion-panel>
+                  </v-col>
+                </v-expansion-panels>
+              </v-row>
+            </v-lazy>
+          </v-responsive>
+        </v-responsive>
+      </v-card>
+
+      <div style="font-size: 1.5rem">อยู่ในคลัง ({{ headerdata.qty_unavailable }})</div>
+      <v-card>
+        <v-responsive class="overflow-y-auto" max-height="200">
+          <v-responsive>
+            <v-lazy
+              v-model="isActive"
+              :options="{
+                threshold: 0.5,
+              }"
+              color="primary"
+              min-height="200"
+              transition="fade-transition"
+            >
+              <v-row class="ma-2">
+                <v-expansion-panels style="justify-content: left">
+                  <v-col
+                    cols="12"
+                    md="4"
+                    class="pa-1"
+                    v-for="(Asset, i) in AssetListitemB"
+                    :key="i"
+                  >
+                    <v-expansion-panel>
+                      <v-row align="center" no-gutters>
+                        <v-col cols="10" md="10">
+                          <v-expansion-panel-header
+                            class="pa-0 pl-5"
+                            style="font-size: 1rem; border-left: solid #e9bc02 3px"
                             @click="ListAssetItemDetaildata(Asset)"
                           >
                             <div v-if="Asset.serial_number === ''">
                               <div>
                                 <v-icon color="black" class="pa-0"> qr_code</v-icon> ไม่มี
-                                <v-progress-circular
-                                  max="10"
-                                  :rotate="360"
-                                  :size="40"
-                                  :width="10"
-                                  :value="Asset.condition"
-                                  color="blue"
-                                >
-                                  {{ value }}
-                                </v-progress-circular>
                               </div>
                             </div>
                             <div v-else>
@@ -80,7 +164,17 @@
                             </div>
                           </v-expansion-panel-header>
                         </v-col>
-                        <v-col cols="1" md="1">
+                        <v-col cols="1" md="2">
+                          <v-progress-circular
+                            max="10"
+                            :rotate="360"
+                            :size="20"
+                            :width="4"
+                            :value="Asset.conditions * 10"
+                            color="yellow"
+                          >
+                            {{ value }}
+                          </v-progress-circular>
                           <v-menu>
                             <template v-slot:activator="{ on: menu, attrs }">
                               <v-tooltip bottom>
@@ -94,7 +188,7 @@
                                     v-on="{ ...tooltip, ...menu }"
                                     @click="ClickAssetItemDetaildata(Asset)"
                                   >
-                                    <v-icon color="black"> settings </v-icon>
+                                    <v-icon color="black"> </v-icon>
                                   </v-btn>
                                 </template>
                                 <span>แก้ไข</span>
@@ -129,85 +223,11 @@
                       <v-expansion-panel-content>
                         <v-row class="pt-4">
                           <v-col cols="12" sm="6" md="6" class="pa-1">
-                            <v-icon color="blue">location_on</v-icon
+                            <v-icon color="yellow">location_on</v-icon
                             >{{ Assetdetail.location }}
                           </v-col>
                           <v-col cols="12" sm="6" md="6" class="pa-1">
-                            <v-icon color="blue">person</v-icon>
-                          </v-col>
-                          <v-col cols="12" class="pa-1"> </v-col>
-                        </v-row>
-                      </v-expansion-panel-content>
-                    </v-expansion-panel>
-                  </v-col>
-                </v-expansion-panels>
-              </v-row>
-            </v-lazy>
-          </v-responsive>
-        </v-responsive>
-      </v-card>
-
-      <div style="font-size: 1.5rem">ถอน ({{ headerdata.qty_unavailable }})</div>
-      <v-card>
-        <v-responsive class="overflow-y-auto" max-height="200">
-          <v-responsive>
-            <v-lazy
-              v-model="isActive"
-              :options="{
-                threshold: 0.5,
-              }"
-              color="primary"
-              min-height="200"
-              transition="fade-transition"
-            >
-              <v-row class="ma-2">
-                <v-expansion-panels style="justify-content: left">
-                  <v-col
-                    cols="12"
-                    md="4"
-                    class="pa-1"
-                    v-for="(Asset, i) in AssetListitemB"
-                    :key="i"
-                  >
-                    <v-expansion-panel>
-                      <v-row align="center" no-gutters>
-                        <v-col cols="11" md="11">
-                          <v-expansion-panel-header
-                            class="pa-0 pl-5"
-                            style="font-size: 1rem; border-left: solid yellow 3px"
-                            @click="ClickAssetItemDetaildata(Asset)"
-                          >
-                            <div v-if="Asset.serial_number === ''">
-                              <div>
-                                <v-icon color="black" class="pa-0"> qr_code</v-icon> ไม่มี
-                                <v-progress-circular
-                                  max="10"
-                                  :rotate="360"
-                                  :size="40"
-                                  :width="10"
-                                  :value="Asset.condition"
-                                  color="yellow"
-                                >
-                                  {{ value }}
-                                </v-progress-circular>
-                              </div>
-                            </div>
-                            <div v-else>
-                              <v-icon color="black" class="pa-0"> qr_code</v-icon>
-                              {{ Asset.serial_number }}
-                            </div>
-                          </v-expansion-panel-header>
-                        </v-col>
-                      </v-row>
-
-                      <v-expansion-panel-content>
-                        <v-row class="pt-4">
-                          <v-col cols="12" sm="6" md="6" class="pa-1">
-                            <v-icon color="blue">event</v-icon>
-                            {{ Assetdetail.update_at }}
-                          </v-col>
-                          <v-col cols="12" sm="6" md="6" class="pa-1">
-                            <v-icon color="blue">person</v-icon>
+                            <v-icon color="yellow">person</v-icon>
                           </v-col>
                           <v-col cols="12" class="pa-1"> </v-col>
                         </v-row>
@@ -230,19 +250,11 @@
       />
     </v-dialog>
 
-    <v-dialog transition="dialog-top-transition" max-width="900" v-model="Update_group">
-      <UpdateAssetItem
-        :AssetItem="group_data"
-        @close="closeUpdateAssetItem"
-        @cancel="cancelUpdate"
-      />
-    </v-dialog>
-
-    <v-dialog transition="dialog-top-transition" max-width="500" v-model="Delete_group">
-      <DeleteAssetItem
-        :AssetItem="group_data"
-        @close="closeDeleteAssetItem"
-        @cancel="cancelDelete"
+    <v-dialog transition="dialog-top-transition" max-width="900" v-model="Detail_group">
+      <DetailAssetItem
+        :Asset="group_data"
+        @close="closeDetailAssetItem"
+        @cancel="cancelDetail"
       />
     </v-dialog>
   </div>
@@ -250,9 +262,8 @@
 
 <script>
 import moment from "moment";
+import DetailAssetItem from "../../../components/AssetItem/DetailAssetItem.vue";
 import InsertAssetItem from "../../../components/AssetItem/InsertAssetItem.vue";
-import UpdateAssetItem from "../../../components/AssetItem/UpdateAssetItem.vue";
-import DeleteAssetItem from "../../../components/AssetItem/DeleteAssetItem.vue";
 import api from "../../../services/asset";
 export default {
   name: "listAssetitem",
@@ -261,31 +272,25 @@ export default {
       group_data: "",
       isActive: false,
       Insert_group: false,
-      Update_group: false,
-      Delete_group: false,
+      Detail_group: false,
       Asset_id: this.$route.params.id,
       AssetListitemA: [],
       AssetListitemB: [],
-      assetdetailID: 0,
       Assetdetail: [],
       headerdata: [],
       clickAssetData: [],
-      condition: 5,
+      respones:"",
     };
   },
-  components: { InsertAssetItem, UpdateAssetItem, DeleteAssetItem },
+  components: { InsertAssetItem, DetailAssetItem },
   methods: {
     openInsertAssetItem(val) {
       this.group_data = val;
       this.Insert_group = true;
     },
-    openUpdateAssetItem(val) {
+    openDetailAssetItem(val) {
       this.group_data = val;
-      this.Update_group = true;
-    },
-    openDeleteAssetItem(val) {
-      this.group_data = val;
-      this.Delete_group = true;
+      this.Detail_group = true;
     },
 
     closeInsertAssetItem(close, assetid) {
@@ -294,27 +299,18 @@ export default {
       this.ListAssetItemB(assetid);
       this.HaederAssetdata(assetid);
     },
-    closeUpdateAssetItem(close, assetid) {
-      this.Update_group = close;
-      this.ListAssetItemA(assetid);
-      this.ListAssetItemB(assetid);
-      this.HaederAssetdata(assetid);
-    },
-    closeDeleteAssetItem(close, assetid) {
-      this.Delete_group = close;
+    closeDetailAssetItem(close, assetid) {
+      this.Detail_group = close;
       this.ListAssetItemA(assetid);
       this.ListAssetItemB(assetid);
       this.HaederAssetdata(assetid);
     },
 
-    cancelInsert(close) {
-      this.Insert_group = close;
+    cancelInsert(cancel) {
+      this.Insert_group = cancel;
     },
-    cancelUpdate(close) {
-      this.Update_group = close;
-    },
-    cancelDelete(close) {
-      this.Delete_group = close;
+    cancelDetail(cancel) {
+      this.Detail_group = cancel;
     },
     ListAssetItemA() {
       api.ListAssetItemAvailable(
@@ -323,7 +319,20 @@ export default {
         },
         (result) => {
           this.AssetListitemA = result.data;
-          this.AssetListitemA.condition = this.AssetListitemA.condition * 10;
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    changstatus(val) {
+      console.log(val)
+      api.UpdatestatusAssetItem(
+        {
+          id: val,
+        },
+        (result) => {
+          this.respones = result.respones;
         },
         (error) => {
           console.log(error);
@@ -337,7 +346,6 @@ export default {
         },
         (result) => {
           this.AssetListitemB = result.data;
-          this.AssetListitemB.condition = this.AssetListitemB.condition * 10;
         },
         (error) => {
           console.log(error);
@@ -351,8 +359,8 @@ export default {
         },
         (result) => {
           this.headerdata = result.data;
-          if(this.headerdata.qty_available == 0){
-            this.openInsertAssetItem()
+          if (this.headerdata.qty == 0) {
+            this.openInsertAssetItem(this.Asset_id);
           }
         },
         (error) => {
@@ -384,7 +392,7 @@ export default {
         },
         (result) => {
           this.clickAssetData = result.data;
-          console.log(this.clickAssetData);
+          this.openDetailAssetItem(this.clickAssetData);
         },
         (error) => {
           console.log(error);
@@ -393,9 +401,9 @@ export default {
     },
   },
   mounted() {
-      this.HaederAssetdata();
-      this.ListAssetItemA();
-      this.ListAssetItemB();
+    this.HaederAssetdata();
+    this.ListAssetItemA();
+    this.ListAssetItemB();
   },
 };
 </script>
@@ -407,3 +415,5 @@ export default {
   background: linear-gradient(90.75deg, #00b9f8 5.43%, #3780ee 84.26%), #c4c4c4;
 }
 </style>
+
+

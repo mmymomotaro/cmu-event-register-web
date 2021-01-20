@@ -7,8 +7,14 @@
             <v-row no-gutters>
               <v-col cols="12" md="3">สินทรัพย์เสียหาย</v-col>
               <v-col cols="2" md="1" class="px-1">
-                <div class="text-center">
-                  <v-menu bottom :offset-y="offset" :nudge-width="200">
+                <div class="text-left">
+                  <v-menu
+                    bottom
+                    :offset-y="offset"
+                    :nudge-width="200"
+                    transition="slide-y-transition"
+                  >
+                    <div class="text-left"></div>
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
                         fab
@@ -16,31 +22,44 @@
                         small
                         v-bind="attrs"
                         v-on="on"
-                        color="grey"
-                        @click="ClickAssetItemDetaildata(Asset)"
+                        @click="ListCateAndsubcate()"
                       >
-                        <v-icon color="red darken-1"> inventory </v-icon>
+                        <v-icon color="black"> inventory </v-icon>
                       </v-btn>
                     </template>
                     <v-list>
-                      <v-list-item v-for="cag in CategoryList" :key="cag.id">
-                        <v-menu bottom :nudge-width="100" :offset-x="offset">
-                          <template v-slot:activator="{ on, subattrs }">
-                            <v-list-item-title
-                              v-bind="subattrs"
+                      <v-list-item v-for="cate in CategoryList" :key="cate.id">
+                        <v-menu
+                          open-on-hover
+                          bottom
+                          :offset-x="offset"
+                          :nudge-width="100"
+                          transition="slide-x-transition"
+                        >
+                          <template v-slot:activator="{ on, attrs }">
+                            <v-btn
+                              color="primary"
+                              dark
+                              v-bind="attrs"
                               v-on="on"
-                              @click="
-                                ListSubCategorydata(cag.id, val),
-                                  SearchAssetBycatdata(cag)
-                              "
-                              >{{ cag.name }}</v-list-item-title
+                              block
+                              text
+                              @click="SearchAssetBycatdata(cate)"
                             >
+                              {{ cate.name }}
+                            </v-btn>
                           </template>
                           <v-list>
-                            <v-list-item v-for="subcat in SubCategoryList" :key="subcat">
-                              <v-list-item-title
-                                @click="SearchAssetBySubcatdata(subcat)"
-                                >{{ subcat.sname }}</v-list-item-title
+                            <v-list-item v-for="(sub, id) in cate.subs" :key="id">
+                              <v-list-item-title>
+                                <v-btn
+                                  color="success"
+                                  block
+                                  text
+                                  @click="SearchAssetBySubcatdata(sub)"
+                                >
+                                  {{ sub.sub_category_name }}
+                                </v-btn></v-list-item-title
                               >
                             </v-list-item>
                           </v-list>
@@ -72,17 +91,7 @@
           >
           <!-- <v-breadcrumbs class="pa-0" :items="items"></v-breadcrumbs> -->
         </v-col>
-        <v-col cols="12" md="2" class="px-1">
-          <v-btn
-            style="font-size: 1rem"
-            justify-center
-            block
-            outlined
-            color="red darken-1"
-            @click="openInsertAsset()"
-            >เพิ่มสินทรัพย์</v-btn
-          >
-        </v-col>
+        <v-col cols="12" md="2" class="px-1"> </v-col>
       </v-row>
       <v-item-group active-class="primary">
         <v-row no-gutters>
@@ -94,45 +103,44 @@
             v-for="AssList in AssetList"
             :key="AssList.name"
           >
-              <v-card class="mx-auto" max-width="400">
-                <v-img class="white--text align-end" height="200px" :src="AssList.url">
-                </v-img>
-                <v-card-text
-                  class="text--primary pa-2"
-                  @click="golistAssetitem(AssList.id)"
-                >
-                  <div style="font-size: 16px; font-weight: bold; height: 50px">
-                    {{ AssList.name }}
-                  </div>
-                  <div style="font-size: 14px">
-                    <v-icon color="gray" class="pr-2">qr_code</v-icon
-                    >{{ AssList.barcode }}
-                  </div>
-                  <div style="font-size: 14px">{{ AssList.category_name }}</div>
-                  <div style="font-size: 14px">
-                    <v-list-item-icon class="ma-0">{{
-                      AssList.sub_category_name
-                    }}</v-list-item-icon>
-                  </div>
-                    <div style="font-size: 14px" class="red--text">
-                      <v-list-item-icon class="ma-0"
-                        ><v-icon color="red" class="pr-2">highlight_off</v-icon> จำนวน
-                        {{ AssList.qty }} ชิ้น</v-list-item-icon
-                      >
-                    </div>
-                </v-card-text>
-                <v-row no-gutters>
-                  <v-col cols="12" class="pa-1">
-                    <v-btn
-                      text
-                      block
-                      style="font-size: 0.7rem"
-                      @click="openAssetDetail(AssList)"
-                      ><v-icon color="grey">analytics</v-icon> ดูข้อมูลเพิ่มเติม</v-btn
-                    >
-                  </v-col>
-                </v-row>
-                <v-row no-gutters>
+            <v-card class="mx-auto" max-width="400">
+              <v-img class="white--text align-end" height="200px" :src="AssList.url">
+              </v-img>
+              <v-card-text
+                class="text--primary pa-2"
+                @click="golistAssetitem(AssList.id)"
+              >
+                <div style="font-size: 16px; font-weight: bold; height: 50px">
+                  {{ AssList.name }}
+                </div>
+                <div style="font-size: 14px">
+                  <v-icon color="gray" class="pr-2">qr_code</v-icon>{{ AssList.barcode }}
+                </div>
+                <div style="font-size: 14px">{{ AssList.category_name }}</div>
+                <div style="font-size: 14px">
+                  <v-list-item-icon class="ma-0">{{
+                    AssList.sub_category_name
+                  }}</v-list-item-icon>
+                </div>
+                <div style="font-size: 14px" class="red--text">
+                  <v-list-item-icon class="ma-0"
+                    ><v-icon color="red" class="pr-2">highlight_off</v-icon> จำนวน
+                    {{ AssList.qty }} ชิ้น</v-list-item-icon
+                  >
+                </div>
+              </v-card-text>
+              <v-row no-gutters>
+                <v-col cols="12" class="pa-1">
+                  <v-btn
+                    text
+                    block
+                    style="font-size: 0.7rem"
+                    @click="openAssetDetail(AssList)"
+                    ><v-icon color="grey">analytics</v-icon> ดูข้อมูลเพิ่มเติม</v-btn
+                  >
+                </v-col>
+              </v-row>
+              <!-- <v-row no-gutters>
                   <v-col cols="12" md="6" class="pa-1">
                     <v-btn color="blue" text block @click="openUpdateAsset(AssList)"
                       >แก้ไข</v-btn
@@ -143,29 +151,29 @@
                       >ลบ</v-btn
                     >
                   </v-col>
-                </v-row>
-              </v-card>
+                </v-row> -->
+            </v-card>
           </v-col>
         </v-row>
       </v-item-group>
     </v-container>
 
-    <v-dialog
+    <!-- <v-dialog
       persistent
       transition="dialog-top-transition"
       max-width="900"
       v-model="Insert_group"
     >
-      <InsertAsset @close="closeInsert" @cancel="cancelInsert" />
-    </v-dialog>
+      <InsertAssetDamage @close="closeInsert" @cancel="cancelInsert" />
+    </v-dialog> -->
 
-    <v-dialog
+    <!-- <v-dialog
       persistent
       transition="dialog-top-transition"
       max-width="900"
       v-model="Update_group"
-    >
-      <UpdateAsset
+    > -->
+    <!-- <UpdateAssetDamage
         :SendAssetData="group_data"
         @close="closeUpdate"
         @cancel="cancelUpdate"
@@ -173,24 +181,25 @@
     </v-dialog>
 
     <v-dialog transition="dialog-top-transition" max-width="500" v-model="Delete_group">
-      <DeleteAsset
+      <DeleteAssetDamage
         :SendAssetData="group_data"
         @close="closeDelete"
         @cancel="cancelDelete"
       />
-    </v-dialog>
+    </v-dialog> -->
 
     <v-dialog transition="dialog-top-transition" max-width="900" v-model="Detail_group">
-      <AssetDetail :SendAssetData="group_data" />
+      <DetailAssetDamage :SendAssetData="group_data" />
     </v-dialog>
   </div>
 </template>
 
 <script>
-import InsertAsset from "../../../components/Asset/InsertAsset.vue";
-import UpdateAsset from "../../../components/Asset/UpdateAsset.vue";
-import DeleteAsset from "../../../components/Asset/DeleteAsset.vue";
-import AssetDetail from "../../../components/AssetDamage/AssetDamageDetail.vue";
+import DetailAssetDamage from "../../../components/AssetDamage/DetailAssetDamage.vue";
+// import InsertAssetDamage from "../../../components/AssetDamage/InsertAssetDamage.vue";
+// import UpdateAssetDamage from "../../../components/AssetDamage/UpdateAssetDamage.vue";
+// import DeleteAssetDamage from "../../../components/AssetDamage/DeleteAssetDamage.vue";
+
 import api from "../../../services/asset";
 export default {
   name: "ManageAssetDamage",
@@ -199,38 +208,21 @@ export default {
       search: "",
       length: null,
       AssetList: [],
-      Insert_group: false,
-      Update_group: false,
-      Delete_group: false,
+      // Insert_group: false,
+      // Update_group: false,
+      // Delete_group: false,
       Detail_group: false,
       group_data: {},
       CategoryList: [],
       SubCategoryList: [],
-      items: [
-        {
-          text: "จัดการสินทรัพย์",
-          disabled: false,
-          href: "breadcrumbs_dashboard",
-        },
-        {
-          text: "Link 1",
-          disabled: false,
-          href: "breadcrumbs_link_1",
-        },
-        {
-          text: "Link 2",
-          disabled: true,
-          href: "breadcrumbs_link_2",
-        },
-      ],
       offset: true,
     };
   },
   components: {
-    InsertAsset,
-    UpdateAsset,
-    DeleteAsset,
-    AssetDetail,
+    // InsertAssetDamage,
+    // UpdateAssetDamage,
+    // DeleteAssetDamage,
+    DetailAssetDamage,
   },
   methods: {
     openInsertAsset() {
@@ -275,6 +267,19 @@ export default {
 
     golistAssetitem(val) {
       this.$router.push("listAssetitemDamage/" + val);
+    },
+    ListCateAndsubcate() {
+      api.SerachAssetCatSub(
+        {
+          id: null,
+        },
+        (result) => {
+          this.CategoryList = result.data;
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     },
     ListCategorydata() {
       api.ListCategory(
@@ -322,6 +327,7 @@ export default {
           keyword: val,
           active: 1,
           limit: 25,
+          status: 0,
         },
         (result) => {
           this.AssetList = result.data;
@@ -336,6 +342,7 @@ export default {
         {
           category_id: val.id,
           sub_category_id: null,
+          status: 0,
         },
         (result) => {
           this.AssetList = result.data;
@@ -350,6 +357,7 @@ export default {
         {
           category_id: val.category_id,
           sub_category_id: val.id,
+          status: 0,
         },
         (result) => {
           this.AssetList = result.data;

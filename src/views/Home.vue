@@ -1,6 +1,6 @@
 <template>
   <div>
-    <GmapMap
+    <!-- <GmapMap
       v-bind:center="center"
       v-bind:zoom="15"
       map-type-id="terrain"
@@ -13,7 +13,44 @@
         v-bind:clickable="true"
         v-bind:draggable="true"
       />
-    </GmapMap>
+    </GmapMap> -->
+     <v-card-actions>
+          <v-spacer />
+          <v-btn color="blue darken-1" text @click="page.ecom.show = false">
+            ปิด
+          </v-btn>
+          <v-btn
+            class="ma-2"
+            tile
+            color="success"
+            @click="saveEcomRefno(page.ecom,0)"
+          >
+            <v-icon left>
+              mdi-send
+            </v-icon>
+            บันทึก
+          </v-btn>
+        </v-card-actions>
+    <v-dialog v-model="maps.show">
+      <v-card v-if="maps.show">
+        <v-card-title class="headline" />
+        <v-card-text class="grid-map">
+          <listmap @eventSelect="getMap" />
+
+          <div id="map" ref="google_map" />
+        </v-card-text>
+        <v-card-actions>
+          {{ `{ ${maps.lat},${maps.lng} }` }}
+          <v-spacer />
+          <v-btn color="green darken-1" text @click="maps.show = false">
+            ยกเลิก
+          </v-btn>
+          <v-btn color="green darken-1" text @click="saveLatLng(maps.lat,maps.lng,maps.state)">
+            บันทึก
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 <script>
@@ -21,11 +58,19 @@ export default {
   components: [],
   data() {
     return {
-      center: { lat: 18.80791764321661, lng: 99.01388259667786 },
-      markers: [
-        { position: { lat: 18.82489237704105, lng: 99.01166793448174 } },
-        { position: { lat: 18.77460756283495, lng: 99.06628064992606 } },
-      ],
+      // center: { lat: 18.80791764321661, lng: 99.01388259667786 },
+      // markers: [
+      //   { position: { lat: 18.82489237704105, lng: 99.01166793448174 } },
+      //   { position: { lat: 18.77460756283495, lng: 99.06628064992606 } },
+      // ],
+      markers: [],
+      maps: {
+        map: null,
+        show: true,
+        state: 'new',
+        lat: 0,
+        lng: 0
+      },
     };
   },
   methods:{

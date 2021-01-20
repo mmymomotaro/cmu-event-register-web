@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card class="pa-3 white--text" color="primary" style="font-size: 1.5rem"
+    <v-card class="pa-3 white--text" color="red darken-2" style="font-size: 1.5rem"
       >เพิ่ม</v-card
     >
     <v-card class="pa-3">
@@ -27,6 +27,7 @@
             label="สถานที่เก็บ"
             required
           ></v-select>
+          {{Locationdata}}
         </v-col>
         <v-col cols="12" md="12">
           <v-menu
@@ -39,9 +40,9 @@
           >
             <template v-slot:activator="{ on, attrs }">
               <v-text-field
-                v-model="date"
+                v-model="warranty"
                 label="วันสินสุดรับประกัน"
-                prepend-icon="mdi-calendar"
+                prepend-icon="security"
                 readonly
                 v-bind="attrs"
                 v-on="on"
@@ -53,9 +54,11 @@
         <v-col cols="12" md="12">
           <v-subheader class="pl-0"> สภาพสินทรัพย์ </v-subheader>
           <v-slider
-            v-model="slider"
+            v-model="condition"
             prepend-icon="build"
             :thumb-size="24"
+            max="10"
+            min="0"
             thumb-label="always"
           ></v-slider>
         </v-col>
@@ -74,7 +77,13 @@
           </v-btn>
         </v-col>
         <v-col cols="6" md="6" class="pl-1">
-          <v-btn block outlined color="primary" height="2.5rem" @click="checkdata()">
+          <v-btn
+            block
+            outlined
+            color="primary"
+            height="2.5rem"
+            @click="checkdataUpload()"
+          >
             ยืนยัน
           </v-btn>
         </v-col>
@@ -85,7 +94,7 @@
       <PopupInsert />
     </v-dialog>
 
-    <v-dialog max-width="450" v-model="Error_group">
+    <v-dialog max-width="450" v-model="ErrorInputiden_group">
       <PopupErrorInputiden />
     </v-dialog>
 
@@ -105,34 +114,29 @@ export default {
   props: ["Asset"],
   data() {
     return {
+      switch1: true,
       headerdata: [],
       SerialNumber: "",
-      statusAssettiem: 1,
-      availableAssetitem: 1,
       e1: 1,
       Insert_group: false,
-      Error_group: false,
+      ErrorInputiden_group: false,
       ErrorRespon_group: false,
       dataclose: false,
       Locationdata: "",
       Location: [],
       response: "",
-      date: new Date().toISOString().substr(0, 10),
-      modal: false,
+      warranty: new Date().toISOString().substr(0, 10),
       menu2: false,
-      slider: 50,
+      condition: 10,
     };
   },
   components: { PopupInsert, PopupErrorInputiden, PopupResponError },
   methods: {
-    checkdata() {
-      if (this.Locationdata === "") {
-        this.Error_group = true;
-        setTimeout(() => {
-          this.Error_group = false;
-        }, 2000);
+    checkdataUpload() {
+      if (this.Locationdata == "") {
+        this.openError()
       } else {
-        this.InsertAssetItemdata();
+        this.InsertAssetItemdata()
       }
     },
     ListLocationAssetItemdata() {
@@ -169,18 +173,19 @@ export default {
         {
           asset_id: parseInt(this.Asset),
           location_id: this.Locationdata.id,
-          status: this.statusAssettiem,
-          available: this.availableAssetitem,
+          status: 0,
+          available: 1,
           serial_number: this.SerialNumber,
+          conditions: this.condition,
+          warranty_date: this.warranty,
+          detail: this.itemdescription,
         },
         (result) => {
           this.response = result.response;
           if (this.response === "success") {
-            console.log("B");
             this.closeInsert();
             this.closeInsertgroup();
           } else {
-            console.log("C");
             this.closeInsert();
             this.ErrorRespon_group = true;
             setTimeout(() => {
@@ -200,10 +205,10 @@ export default {
       this.Insert_group = false;
     },
     openError() {
-      this.Error_group = true;
+      this.ErrorInputiden_group = true;
     },
     closeError() {
-      this.Error_group = false;
+      this.ErrorInputiden_group = false;
     },
     closegroup() {
       this.resetdata();
@@ -218,17 +223,25 @@ export default {
       this.$emit("cancel", this.dataclose);
     },
     resetdata() {
-      (this.headerdata = []),
+      (this.switch1 = true),
+        (this.headerdata = []),
         (this.SerialNumber = ""),
-        (this.statusAssettiem = 1),
-        (this.availableAssetitem = 1),
         (this.e1 = 1),
-        (this.Loading_group = false),
+        (this.Insert_group = false),
         (this.Error_group = false),
+        (this.ErrorRespon_group = false),
         (this.dataclose = false),
         (this.Locationdata = ""),
         (this.Location = []),
-        (this.itemdata = []),
+        (this.response = ""),
+        (this.warranty = new Date().toISOString().substr(0, 10)),
+        (this.menu2 = false),
+        (this.condition = 10),
+        (this.statusdata = []),
+        (this.status = [
+          { id: 0, name: "เสีย" },
+          { id: 1, name: "ดี" },
+        ]),
         this.ListLocationAssetItemdata();
     },
   },

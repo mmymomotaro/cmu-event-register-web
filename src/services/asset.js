@@ -111,6 +111,16 @@ ListSubCategory(obj, success, error) {
   
   // --------------------------- Asset
   
+    SerachAssetCatSub(obj, success, error) {
+    Vue.axios.post(address + '/asset_api/list/categorybar', obj).then(
+      (response) => {
+        success(response.data)
+      },
+      (response) => {
+        error(response)
+      }
+    )
+  },
   SerachAssetBycat(obj, success, error) {
     Vue.axios.post(address + '/asset_api/search/asset/category', obj).then(
       (response) => {
@@ -276,6 +286,16 @@ HaederAsset(obj, success, error) {
   },
     DeleteAssetItem(obj, success, error) {
     Vue.axios.post(address + '/asset_api/delete/asset/item/id', obj).then(
+      (response) => {
+        success(response.data)
+      },
+      (response) => {
+        error(response)
+      }
+    )
+  },
+  UpdatestatusAssetItem(obj, success, error) {
+    Vue.axios.post(address + '/asset_api/update/status', obj).then(
       (response) => {
         success(response.data)
       },

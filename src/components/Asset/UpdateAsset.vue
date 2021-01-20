@@ -148,7 +148,7 @@
               </v-form>
             </v-card>
             <v-btn text @click="e1 = 2"> ย้อนกลับ </v-btn>
-            <v-btn class="botton white--text" type="submit" @click="checkimgdata()">
+            <v-btn class="botton white--text" type="submit" @click="checkdataUpload()">
               เพิ่มข้อมูล
             </v-btn>
           </v-stepper-content>
@@ -194,30 +194,45 @@ export default {
       barcodest: "",
       barcode: "",
       time: Date(),
-      imagefile: "", 
-      urlfile: this.SendAssetData.url, 
+      imagefile: "",
+      urlfile: this.SendAssetData.url,
       urlFromApi: "",
     };
   },
-  components: {PopupUpdate, PopupErrorInputiden,PopupResponError },
+  components: { PopupUpdate, PopupErrorInputiden, PopupResponError },
   methods: {
+    checkdataUpload() {
+      if (
+        this.assetname == "" ||
+        this.typeSNdata == "" ||
+        this.Categorydata == "" ||
+        this.SubCategorydata == ""
+      ) {
+        this.ErrorInputiden_group = true;
+        setTimeout(() => {
+          this.ErrorInputiden_group = false;
+        }, 2000);
+      } else {
+        this.checkimgdata();
+      }
+    },
     resetdata() {
-      this.dataclose = false,
-      this.Update_group= false,
-      this.Error_group= false,
-      this.ErrorRespon_group= false,
-      this.e1= 1,
-      this.asset= [],
-      this.CategoryList= [],
-      this.Categorydata= [],
-      this.SubCategoryList= [],
-      this.SubCategorydata= [],
-      this.barcodest= "",
-      this.barcode= "",
-      this.time= Date(),
-      this.imagefile= "", 
-      this.urlfile= this.SendAssetData.url, 
-      this.urlFromApi= ""
+      (this.dataclose = false),
+        (this.Update_group = false),
+        (this.Error_group = false),
+        (this.ErrorRespon_group = false),
+        (this.e1 = 1),
+        (this.asset = []),
+        (this.CategoryList = []),
+        (this.Categorydata = []),
+        (this.SubCategoryList = []),
+        (this.SubCategorydata = []),
+        (this.barcodest = ""),
+        (this.barcode = ""),
+        (this.time = Date()),
+        (this.imagefile = ""),
+        (this.urlfile = this.SendAssetData.url),
+        (this.urlFromApi = "");
       this.SelectCategoryID();
       this.SelectSubCategoryIDdata();
     },
@@ -229,11 +244,11 @@ export default {
     },
     cancelUpdategroup() {
       this.$emit("cancel", this.dataclose);
-      this.resetdata()
+      this.resetdata();
     },
     closeUpdategroup() {
       this.$emit("close", this.dataclose);
-      this.resetdata()
+      this.resetdata();
     },
 
     ListCategorydata() {
@@ -285,7 +300,7 @@ export default {
         },
         (result) => {
           this.Categorydata = result.data;
-          console.log("Categorydata",this.Categorydata)
+          console.log("Categorydata", this.Categorydata);
         },
         (error) => {
           console.log(error);
@@ -310,7 +325,7 @@ export default {
       if (this.SendAssetData.url === this.urlfile) {
         this.UpdateAssetdataNoImg();
       } else {
-        this.uploadimage()
+        this.uploadimage();
       }
     },
 
@@ -323,29 +338,28 @@ export default {
     },
     uploadimage() {
       this.openUpdate();
-        const header = {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        };
-        const formData = new FormData();
-        formData.append("file", this.imagefile.files[0]);
-        api.genItem(
-          header,
-          formData,
-          (result) => {
-            if (result.response === "success") {
-              this.urlFromApi = result.data.url;
-              this.UpdateAssetdata();
-            } else {
-              // result.message
-            }
-          },
-          (error) => {
-            alert(JSON.stringify(error));
+      const header = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      };
+      const formData = new FormData();
+      formData.append("file", this.imagefile.files[0]);
+      api.genItem(
+        header,
+        formData,
+        (result) => {
+          if (result.response === "success") {
+            this.urlFromApi = result.data.url;
+            this.UpdateAssetdata();
+          } else {
+            // result.message
           }
-        );
-      
+        },
+        (error) => {
+          alert(JSON.stringify(error));
+        }
+      );
     },
     UpdateAssetdata() {
       let payload = {
@@ -401,7 +415,7 @@ export default {
     SendAssetData(val) {
       console.log(val);
       if (val) {
-        console.log("Pass",val);
+        console.log("Pass", val);
         this.genbarcode();
         this.ListCategorydata();
         this.SelectCategoryID();
@@ -412,11 +426,11 @@ export default {
   },
   mounted() {
     console.log("this");
-    console.log("mounted",this.SendAssetData)
-        this.ListCategorydata();
-        this.SelectCategoryID();
-        this.SelectSubCategoryIDdata();
-        this.SelectAssetID();
+    console.log("mounted", this.SendAssetData);
+    this.ListCategorydata();
+    this.SelectCategoryID();
+    this.SelectSubCategoryIDdata();
+    this.SelectAssetID();
   },
 };
 </script>
