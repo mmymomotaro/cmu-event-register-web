@@ -10,6 +10,7 @@
             v-model="SerialNumber"
             prepend-icon="qr_code"
             counter
+            :disabled="Asset.types == 0"
             maxlength="25"
             hint="ความยาวหมวดหมู่ไม่เกิน 25 ตัวอักษร"
             label="Serial Number"
@@ -27,9 +28,8 @@
             label="สถานที่เก็บ"
             required
           ></v-select>
-          {{Locationdata}}
         </v-col>
-        <v-col cols="12" md="12">
+        <v-col cols="12" md="8">
           <v-menu
             v-model="menu2"
             :close-on-content-click="false"
@@ -48,8 +48,20 @@
                 v-on="on"
               ></v-text-field>
             </template>
-            <v-date-picker v-model="date" @input="menu2 = false"></v-date-picker>
+            <v-date-picker v-model="warranty" @input="menu2 = false"></v-date-picker>
           </v-menu>
+        </v-col>
+        <v-col cols="12" md="4">
+          <v-select
+            color="light-blue darken-3"
+            v-model="statusdata"
+            prepend-icon="cached"
+            :items="status"
+            item-text="name"
+            return-object
+            label="สถานะ"
+            required
+          ></v-select>
         </v-col>
         <v-col cols="12" md="12">
           <v-subheader class="pl-0"> สภาพสินทรัพย์ </v-subheader>
@@ -89,7 +101,6 @@
         </v-col>
       </v-row>
     </v-card>
-
     <v-dialog persistent max-width="300" v-model="Insert_group">
       <PopupInsert />
     </v-dialog>
@@ -125,18 +136,23 @@ export default {
       Locationdata: "",
       Location: [],
       response: "",
-      warranty: new Date().toISOString().substr(0, 10),
+      warranty: "",
       menu2: false,
       condition: 10,
+      statusdata: [],
+      status: [
+        { id: 1, name: "ดี" },
+        { id: 0, name: "เสีย" },
+      ],
     };
   },
   components: { PopupInsert, PopupErrorInputiden, PopupResponError },
   methods: {
     checkdataUpload() {
-      if (this.Locationdata == "") {
-        this.openError()
+      if (this.Locationdata == "" || this.statusdata == "") {
+        this.openError();
       } else {
-        this.InsertAssetItemdata()
+        this.InsertAssetItemdata();
       }
     },
     ListLocationAssetItemdata() {
@@ -146,21 +162,6 @@ export default {
         },
         (result) => {
           this.Location = result.data;
-          console.log(this.Location);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-    },
-    ListAssetItemDetaildata() {
-      api.ListAssetItemDetail(
-        {
-          id: parseInt(this.Asset),
-        },
-        (result) => {
-          this.Assetdetail = result.data;
-          console.log(result);
         },
         (error) => {
           console.log(error);
@@ -171,9 +172,9 @@ export default {
       this.openInsert();
       api.InsertAssetItem(
         {
-          asset_id: parseInt(this.Asset),
+          asset_id: parseInt(this.Asset.id),
           location_id: this.Locationdata.id,
-          status: 1,
+          status: this.statusdata.id,
           available: 1,
           serial_number: this.SerialNumber,
           conditions: this.condition,
@@ -184,7 +185,7 @@ export default {
           this.response = result.response;
           if (this.response === "success") {
             this.closeInsert();
-            this.closeInsertgroup();
+            this.closeInsertgroup(this.statusdata);
           } else {
             this.closeInsert();
             this.ErrorRespon_group = true;
@@ -214,9 +215,9 @@ export default {
       this.resetdata();
       this.$emit("closegroup", this.dataclose);
     },
-    closeInsertgroup() {
+    closeInsertgroup(status) {
       this.resetdata();
-      this.$emit("close", this.dataclose, this.Asset);
+      this.$emit("close", this.dataclose, this.Asset, status);
     },
     cancelInsertgroup() {
       this.resetdata();
@@ -228,25 +229,24 @@ export default {
         (this.SerialNumber = ""),
         (this.e1 = 1),
         (this.Insert_group = false),
-        (this.Error_group = false),
+        (this.ErrorInputiden_group = false),
         (this.ErrorRespon_group = false),
         (this.dataclose = false),
         (this.Locationdata = ""),
         (this.Location = []),
         (this.response = ""),
-        (this.warranty = new Date().toISOString().substr(0, 10)),
+        (this.warranty = ""),
         (this.menu2 = false),
         (this.condition = 10),
         (this.statusdata = []),
         (this.status = [
-          { id: 0, name: "เสีย" },
           { id: 1, name: "ดี" },
+          { id: 0, name: "เสีย" },
         ]),
         this.ListLocationAssetItemdata();
     },
   },
   mounted() {
-    console.log(this.Asset);
     this.ListLocationAssetItemdata();
   },
 };

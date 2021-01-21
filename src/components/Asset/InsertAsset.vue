@@ -27,8 +27,7 @@
                       required
                       v-model="assetname"
                       counter
-                      maxlength="20"
-                      hint="This field uses maxlength attribute"
+                      maxlength="50"
                       label="ชื่อสินทรัพย์"
                       color="light-blue darken-3"
                     ></v-text-field>
@@ -55,6 +54,7 @@
                       @change="ListSubCategorydata()"
                       required
                     ></v-select>
+                  
                   </v-col>
                   <v-col cols="12" sm="6" class="px-2">
                     <v-select
@@ -64,6 +64,7 @@
                       item-text="sname"
                       return-object
                       label="ประเภท"
+                      :disabled="Categorydata == ''"
                       required
                     ></v-select>
                   </v-col>
@@ -73,6 +74,8 @@
                       required
                       color="light-blue darken-3"
                       outlined
+                      counter
+                      maxlength="200"
                       name="input-7-4"
                       label="รายละเอียด"
                       v-model="description"
@@ -239,45 +242,45 @@ export default {
       urlFromApi: "",
       itemImg: "",
       genimg: "",
+      typeSNdata: [],
       typeSN: [
         { id: 1, name: "มี" },
         { id: 0, name: "ไม่มี" },
       ],
-      typeSNdata: [],
     };
   },
   components: { PopupInsert, PopupErrorInputiden, PopupResponError },
   methods: {
     resetdata() {
-      (this.selectedFile = ""),
-        (this.dataclose = false),
-        (this.Insert_group = false),
-        (this.ErrorInputiden_group = false),
-        (this.ErrorRespon_group = false),
-        (this.e1 = 1),
-        (this.asset = []),
-        (this.assetname = ""),
-        (this.CategoryList = []),
-        (this.Categorydata = []),
-        (this.SubCategoryList = []),
-        (this.SubCategorydata = []),
-        (this.barcodest = ""),
-        (this.description = ""),
-        (this.barcode = ""),
-        (this.time = ""),
-        (this.response = ""),
-        (this.imagefile = ""),
-        (this.urlfile = ""),
-        (this.img =
-          "https://firebasestorage.googleapis.com/v0/b/np-storage-it.appspot.com/o/no-image.jpg?alt=media"),
-        (this.urlFromApi = ""),
-        (this.itemImg = ""),
-        (this.genimg = ""),
-        (this.typeSN = [
-          { id: 1, name: "มี" },
-          { id: 0, name: "ไม่มี" },
-        ]),
-        (this.typeSNdata = []),
+      this.dataclose= false,
+      this.Insert_group= false,
+      this.ErrorInputiden_group= false,
+      this.ErrorRespon_group= false,
+      this.e1= 1,
+      this.asset= [],
+      this.assetname= "",
+      this.CategoryList= [],
+      this.Categorydata= [],
+      this.SubCategoryList= [],
+      this.SubCategorydata= [],
+      this.barcodest= "",
+      this.description= "",
+      this.barcode= "",
+      this.time= "",
+      this.response= "",
+      this.imagefile= "",
+      this.urlfile=
+        "https://firebasestorage.googleapis.com/v0/b/np-storage-it.appspot.com/o/no-image.jpg?alt=media",
+      this.img=
+        "https://firebasestorage.googleapis.com/v0/b/np-storage-it.appspot.com/o/no-image.jpg?alt=media",
+      this.urlFromApi= "",
+      this.itemImg= "",
+      this.genimg= "",
+      this.typeSNdata= [],
+      this.typeSN= [
+        { id: 1, name: "มี" },
+        { id: 0, name: "ไม่มี" },
+      ],
         this.ListCategorydata();
     },
     checkdataUpload() {
@@ -297,18 +300,18 @@ export default {
       }
     },
     openLoading() {
-      this.Loading_group = true;
+      this.Insert_group = true;
     },
     closeLoading() {
-      this.Loading_group = false;
+      this.Insert_group = false;
     },
     cancelInsertgroup() {
+      this.resetdata()
       this.$emit("cancel", this.dataclose);
     },
     closeInsertgroup() {
-      this.resetdata();
-      console.log(this.AssetdataInsertitem);
       this.$emit("close", this.dataclose, this.AssetdataInsertitem);
+      this.resetdata();
     },
     ListSubCategorydata() {
       api.ListSubCategory(
@@ -364,7 +367,7 @@ export default {
         barcode: this.barcodest,
         description: this.description,
         url: this.urlFromApi,
-        types: this.typeSN.id,
+        types: this.typeSNdata.id,
       };
       api.InsertAsset(
         payload,

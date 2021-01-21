@@ -27,8 +27,7 @@
                       required
                       v-model="SendAssetData.name"
                       counter
-                      maxlength="25"
-                      hint="This field uses maxlength attribute"
+                      maxlength="50"
                       label="ชื่อสินทรัพย์"
                       color="light-blue darken-3"
                     ></v-text-field>
@@ -63,6 +62,8 @@
                       required
                       color="light-blue darken-3"
                       outlined
+                      counter
+                      maxlength="200"
                       name="input-7-4"
                       label="รายละเอียด"
                       v-model="SendAssetData.description"
@@ -80,14 +81,25 @@
               <v-form>
                 <v-row no-gutters>
                   <v-col cols="12" sm="6" class="px-2">
+                                        <img
+                      height="200px"
+                      width="200px"
+                      :src="
+                        urlfile == ''
+                          ? 'https://firebasestorage.googleapis.com/v0/b/np-storage-it.appspot.com/o/no-image.jpg?alt=media'
+                          : urlfile
+                      "
+                      @click="$refs.fileUpload.click()"
+                    />
                     <input
                       color="light-blue darken-3"
                       type="file"
                       class="form-control-file"
                       id="fileUpload"
-                      @change="testimg()"
+                      ref="fileUpload"
+                      hidden
+                      @change="testimg"
                     />
-                    <img height="200px" width="200px" :src="urlfile" />
                   </v-col>
                   <v-col cols="12" sm="6" class="px-2">
                     <v-text-field
@@ -206,7 +218,8 @@ export default {
         this.assetname == "" ||
         this.typeSNdata == "" ||
         this.Categorydata == "" ||
-        this.SubCategorydata == ""
+        this.SubCategorydata == ""||
+        this.barcodest == ""
       ) {
         this.ErrorInputiden_group = true;
         setTimeout(() => {
@@ -413,9 +426,7 @@ export default {
   },
   watch: {
     SendAssetData(val) {
-      console.log(val);
       if (val) {
-        console.log("Pass", val);
         this.genbarcode();
         this.ListCategorydata();
         this.SelectCategoryID();
@@ -425,8 +436,6 @@ export default {
     },
   },
   mounted() {
-    console.log("this");
-    console.log("mounted", this.SendAssetData);
     this.ListCategorydata();
     this.SelectCategoryID();
     this.SelectSubCategoryIDdata();

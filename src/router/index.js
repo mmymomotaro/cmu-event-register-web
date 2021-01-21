@@ -2,16 +2,21 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import About from '../views/About.vue'
+// User=====================================
 import ManageAsset from '../views/admin/Asset/ManageAsset.vue'
 import ManageCategory from '../views/admin/Category/ManageCategory.vue'
 import ListAssetitem from '../views/admin/Asset/listAssetitem.vue'
 import ManageAssetDamage from '../views/admin/AssetDamage/ManageAssetDamage.vue'
 import ListAssetitemDamage from '../views/admin/AssetDamage/listAssetitemDamage.vue'
 import Dashboard from '../views/admin/Dashboard.vue'
+// User=====================================
+import Asset from '../views/user/Asset.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
+
+  //=========================Admin=========================//
   {
     path: '/',
     name: 'Home',
@@ -38,7 +43,7 @@ const routes = [
     component: ListAssetitem
   },
     {
-    path: '/ManageAssetDamage/',
+    path: '/ManageAssetDamage',
     name: 'ManageAssetDamage',
     component: ManageAssetDamage
   },
@@ -48,9 +53,15 @@ const routes = [
     component: ListAssetitemDamage
   },
   {
-    path: '/Dashboard/',
+    path: '/Dashboard',
     name: 'Dashboard',
     component: Dashboard
+  },
+//=========================User=========================//
+  {
+    path: '/Asset',
+    name: 'Asset',
+    component: Asset
   },
 ]
 

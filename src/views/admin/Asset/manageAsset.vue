@@ -5,7 +5,6 @@
         <v-row no-gutters>
           <v-col cols="12" md="12" style="font-size: 1.7rem" class="text-center">
             <v-row no-gutters>
-
               <v-col cols="12" md="3">จัดการสินทรัพย์</v-col>
               <v-col cols="2" md="1" class="px-1">
                 <div class="text-left">
@@ -15,9 +14,7 @@
                     :nudge-width="200"
                     transition="slide-y-transition"
                   >
-                  <div class="text-left">
-
-                  </div>
+                    <div class="text-left"></div>
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
                         fab
@@ -50,17 +47,20 @@
                               @click="SearchAssetBycatdata(cate)"
                             >
                               {{ cate.name }}
-
                             </v-btn>
                           </template>
                           <v-list>
                             <v-list-item v-for="(sub, id) in cate.subs" :key="id">
                               <v-list-item-title>
-                                <v-btn color="success" block text
-                                @click="SearchAssetBySubcatdata(sub)"
+                                <v-btn
+                                  color="success"
+                                  block
+                                  text
+                                  @click="SearchAssetBySubcatdata(sub)"
                                 >
-                                  {{ sub.sub_category_name}}
-                                </v-btn></v-list-item-title>
+                                  {{ sub.sub_category_name }}
+                                </v-btn></v-list-item-title
+                              >
                             </v-list-item>
                           </v-list>
                         </v-menu>
@@ -86,9 +86,11 @@
     <v-container grid-list-xs>
       <v-row no-gutters class="pb-4">
         <v-col cols="12" md="10">
-          <span style="font-size: 1.2rem">
-            {{ search != "" ? "ผลลัพธ์ :" : "สินทรัพย์ทั้งหมด" }} {{ search }}</span
-          >
+          <div>
+            <span style="font-size: 1.2rem">
+              {{ search != "" ? "ผลลัพธ์ :" : "สินทรัพย์ทั้งหมด" }} {{ search }}</span
+            >
+          </div>
         </v-col>
         <v-col cols="12" md="2" class="px-1">
           <v-btn
@@ -119,7 +121,15 @@
                 class="text--primary pa-2"
                 @click="golistAssetitem(AssList.id)"
               >
-                <div style="font-size: 16px; font-weight: bold; height: 50px">
+                <div
+                  style="
+                    font-size: 16px;
+                    font-weight: bold;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                  "
+                >
                   {{ AssList.name }}
                 </div>
                 <div style="font-size: 14px">
@@ -224,6 +234,8 @@ export default {
   data() {
     return {
       search: "",
+      searchcate: [],
+      searchsubcate: [],
       length: null,
       AssetList: [],
       Insert_group: false,
@@ -233,24 +245,6 @@ export default {
       group_data: {},
       CategoryList: [],
       SubCategoryList: [],
-      items: [
-        {
-          id: 1,
-          name: "คอม",
-          sub_cate: [
-            { id: 1, sname: "เมาส์" },
-            { id: 1, sname: "จอ" },
-          ],
-        },
-                {
-          id: 1,
-          name: "Paybox",
-          sub_cate: [
-            { id: 1, sname: "ตู้กาแฟ" },
-            { id: 1, sname: "กล่องเก็บเงิน" },
-          ],
-        },
-      ],
       offset: true,
     };
   },
@@ -349,7 +343,7 @@ export default {
       );
     },
     SearchAssetBycatdata(val) {
-      // console.log(val)
+      this.search = val.name
       api.SerachAssetBycat(
         {
           category_id: val.id,
@@ -365,7 +359,7 @@ export default {
       );
     },
     SearchAssetBySubcatdata(val) {
-
+      this.search = val.sub_category_name
       api.SerachAssetBycat(
         {
           category_id: val.category_id,

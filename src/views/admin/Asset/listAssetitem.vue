@@ -19,7 +19,7 @@
                 block
                 large
                 class="button white--text"
-                @click="openInsertAssetItem(Asset_id)"
+                @click="openInsertAssetItem(headerdata)"
                 >เพิ่มจำนวน</v-btn
               >
             </v-hover>
@@ -53,35 +53,53 @@
                   >
                     <v-expansion-panel>
                       <v-row align="center" no-gutters>
-                        <v-col cols="10" md="10">
+                        <v-col cols="9" md="9">
                           <v-expansion-panel-header
                             class="pa-0 pl-5"
-                            style="font-size: 1rem; border-left: solid blue 3px"
+                            style="font-size: 1rem; border-left: solid #02a0e9 3px"
                             @click="ListAssetItemDetaildata(AssetA)"
                           >
-                            <div v-if="AssetA.serial_number === ''">
+                            <div
+                              style="
+                                white-space: nowrap;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                              "
+                              v-if="headerdata.types === 0"
+                            >
                               <div>
-                                <v-icon color="black" class="pa-0"> qr_code</v-icon> ไม่มี
+                                <v-icon color="black" class="pa-0"> widgets </v-icon>
+                                {{ AssetA.id }}
                               </div>
                             </div>
-                            <div v-else>
+                            <div
+                              v-else
+                              style="
+                                white-space: nowrap;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                              "
+                            >
                               <v-icon color="black" class="pa-0"> qr_code</v-icon>
                               {{ AssetA.serial_number }}
                             </div>
                           </v-expansion-panel-header>
                         </v-col>
-                        <v-col cols="1" md="2">
+                        <v-col cols="1" md="1">
                           <v-progress-circular
                             max="10"
                             :rotate="360"
-                            :size="20"
+                            :size="25"
                             :width="4"
                             :value="AssetA.conditions * 10"
                             color="blue"
                           >
-                            {{ value }}
+                            <div style="font-size: 13px">
+                              {{ AssetA.conditions }}
+                            </div>
                           </v-progress-circular>
-
+                        </v-col>
+                        <v-col cols="1" md="2">
                           <v-tooltip bottom>
                             <template v-slot:activator="{ on: tooltip }">
                               <v-btn
@@ -111,7 +129,15 @@
                             <v-icon color="blue">event</v-icon>
                             {{ Assetdetail.update_at }}
                           </v-col>
-                          <v-col cols="12" class="pa-1"> <v-btn color="red" class="white--text" block @click="changstatus(Assetdetail.id)">เสีย</v-btn></v-col>
+                          <v-col cols="12" class="pa-1">
+                            <v-btn
+                              color="red"
+                              class="white--text"
+                              block
+                              @click="openChangeAssetItem(Assetdetail.id)"
+                              >เสีย</v-btn
+                            ></v-col
+                          >
                         </v-row>
                       </v-expansion-panel-content>
                     </v-expansion-panel>
@@ -123,7 +149,7 @@
         </v-responsive>
       </v-card>
 
-      <div style="font-size: 1.5rem">อยู่ในคลัง ({{ headerdata.qty_unavailable }})</div>
+      <div style="font-size: 1.5rem">ถอน ({{ headerdata.qty_unavailable }})</div>
       <v-card>
         <v-responsive class="overflow-y-auto" max-height="200">
           <v-responsive>
@@ -132,7 +158,6 @@
               :options="{
                 threshold: 0.5,
               }"
-              color="primary"
               min-height="200"
               transition="fade-transition"
             >
@@ -142,92 +167,89 @@
                     cols="12"
                     md="4"
                     class="pa-1"
-                    v-for="(Asset, i) in AssetListitemB"
+                    v-for="(AssetB, i) in AssetListitemB"
                     :key="i"
                   >
                     <v-expansion-panel>
                       <v-row align="center" no-gutters>
-                        <v-col cols="10" md="10">
+                        <v-col cols="9" md="9">
                           <v-expansion-panel-header
                             class="pa-0 pl-5"
                             style="font-size: 1rem; border-left: solid #e9bc02 3px"
-                            @click="ListAssetItemDetaildata(Asset)"
+                            @click="ListAssetItemDetaildata(AssetB)"
                           >
-                            <div v-if="Asset.serial_number === ''">
-                              <div>
-                                <v-icon color="black" class="pa-0"> qr_code</v-icon> ไม่มี
-                              </div>
+                            <div v-if="headerdata.types === 0">
+                                <v-icon
+                                  color="black"
+                                  class="pa-0"
+                                  style="
+                                    white-space: nowrap;
+                                    overflow: hidden;
+                                    text-overflow: ellipsis;
+                                  "
+                                >
+                                  widgets</v-icon
+                                >
+                                {{ AssetB.id }}
                             </div>
                             <div v-else>
-                              <v-icon color="black" class="pa-0"> qr_code</v-icon>
-                              {{ Asset.serial_number }}
+                              <v-icon
+                                color="black"
+                                class="pa-0"
+                                style="
+                                  white-space: nowrap;
+                                  overflow: hidden;
+                                  text-overflow: ellipsis;
+                                "
+                              >
+                                qr_code</v-icon
+                              >
+                              {{ AssetB.serial_number }}
                             </div>
                           </v-expansion-panel-header>
                         </v-col>
-                        <v-col cols="1" md="2">
+                        <v-col cols="1" md="1">
                           <v-progress-circular
                             max="10"
                             :rotate="360"
-                            :size="20"
+                            :size="25"
                             :width="4"
-                            :value="Asset.conditions * 10"
-                            color="yellow"
+                            :value="AssetB.conditions * 10"
+                            color="yellow accent-4"
                           >
-                            {{ value }}
+                            <div style="font-size: 13px">
+                              {{ AssetB.conditions }}
+                            </div>
                           </v-progress-circular>
-                          <v-menu>
-                            <template v-slot:activator="{ on: menu, attrs }">
-                              <v-tooltip bottom>
-                                <template v-slot:activator="{ on: tooltip }">
-                                  <v-btn
-                                    fab
-                                    text
-                                    small
-                                    color="grey"
-                                    v-bind="attrs"
-                                    v-on="{ ...tooltip, ...menu }"
-                                    @click="ClickAssetItemDetaildata(Asset)"
-                                  >
-                                    <v-icon color="black"> </v-icon>
-                                  </v-btn>
-                                </template>
-                                <span>แก้ไข</span>
-                              </v-tooltip>
+                        </v-col>
+                        <v-col cols="1" md="2">
+                          <v-tooltip bottom>
+                            <template v-slot:activator="{ on: tooltip }">
+                              <v-btn
+                                fab
+                                text
+                                small
+                                color="grey"
+                                v-bind="attrs"
+                                v-on="{ ...tooltip, ...menu }"
+                                @click="ClickAssetItemDetaildata(AssetB)"
+                              >
+                                <v-icon color="black"> article </v-icon>
+                              </v-btn>
                             </template>
-                            <v-list>
-                              <v-list-item>
-                                <v-btn
-                                  color="blue lighten-1"
-                                  block
-                                  outlined
-                                  @click="openUpdateAssetItem(clickAssetData)"
-                                >
-                                  <v-icon>create</v-icon></v-btn
-                                >
-                              </v-list-item>
-                              <v-list-item>
-                                <v-btn
-                                  color="red"
-                                  outlined
-                                  block
-                                  @click="openDeleteAssetItem(clickAssetData)"
-                                >
-                                  <v-icon>delete</v-icon></v-btn
-                                >
-                              </v-list-item>
-                            </v-list>
-                          </v-menu>
+                            <span>ดูรายละเอียด</span>
+                          </v-tooltip>
                         </v-col>
                       </v-row>
 
                       <v-expansion-panel-content>
                         <v-row class="pt-4">
                           <v-col cols="12" sm="6" md="6" class="pa-1">
-                            <v-icon color="yellow">location_on</v-icon
+                            <v-icon color="yellow accent-4">location_on</v-icon
                             >{{ Assetdetail.location }}
                           </v-col>
                           <v-col cols="12" sm="6" md="6" class="pa-1">
-                            <v-icon color="yellow">person</v-icon>
+                            <v-icon color="yellow accent-4">person</v-icon>
                           </v-col>
                           <v-col cols="12" class="pa-1"> </v-col>
                         </v-row>
@@ -257,6 +279,21 @@
         @cancel="cancelDetail"
       />
     </v-dialog>
+
+    <v-dialog transition="dialog-top-transition" max-width="900" v-model="Change_group">
+      <ChangeAssetItem
+        :AssetitemID="group_data"
+        @close="closeChangeAssetItem"
+        @cancel="cancelChange"
+      />
+    </v-dialog>
+    <v-dialog transition="dialog-top-transition" max-width="900" v-model="Null_group">
+      <NullAssetItem
+        :AssetitemID="group_data"
+        @close="closeChangeAssetItem"
+        @cancel="cancelChange"
+      />
+    </v-dialog>
   </div>
 </template>
 
@@ -264,6 +301,8 @@
 import moment from "moment";
 import DetailAssetItem from "../../../components/AssetItem/DetailAssetItem.vue";
 import InsertAssetItem from "../../../components/AssetItem/InsertAssetItem.vue";
+import ChangeAssetItem from "../../../components/AssetItem/ChangeAssetItem.vue";
+import NullAssetItem from "../../../components/AssetItem/NullAssetItem.vue";
 import api from "../../../services/asset";
 export default {
   name: "listAssetitem",
@@ -273,16 +312,18 @@ export default {
       isActive: false,
       Insert_group: false,
       Detail_group: false,
+      Change_group: false,
+      Null_group: false,
       Asset_id: this.$route.params.id,
       AssetListitemA: [],
       AssetListitemB: [],
       Assetdetail: [],
       headerdata: [],
       clickAssetData: [],
-      respones:"",
+      respones: "",
     };
   },
-  components: { InsertAssetItem, DetailAssetItem },
+  components: { InsertAssetItem, DetailAssetItem, ChangeAssetItem, NullAssetItem },
   methods: {
     openInsertAssetItem(val) {
       this.group_data = val;
@@ -292,15 +333,34 @@ export default {
       this.group_data = val;
       this.Detail_group = true;
     },
+    openChangeAssetItem(val) {
+      this.group_data = val;
+      this.Change_group = true;
+    },
+    openNullAssetItem(val) {
+      console.log("this",val)
+      this.group_data = val;
+      this.Null_group = true;
+    },
 
-    closeInsertAssetItem(close, assetid) {
-      this.Insert_group = close;
+    closeInsertAssetItem(close, assetid, status) {
+      if (status.id == 0) {
+        this.$router.push("../listAssetitemDamage/" + assetid.id);
+      } else {
+        this.Insert_group = close;
+        this.ListAssetItemA(assetid);
+        this.ListAssetItemB(assetid);
+        this.HaederAssetdata(assetid);
+      }
+    },
+    closeDetailAssetItem(close, assetid) {
+      this.Detail_group = close;
       this.ListAssetItemA(assetid);
       this.ListAssetItemB(assetid);
       this.HaederAssetdata(assetid);
     },
-    closeDetailAssetItem(close, assetid) {
-      this.Detail_group = close;
+    closeChangeAssetItem(close, assetid) {
+      this.Change_group = close;
       this.ListAssetItemA(assetid);
       this.ListAssetItemB(assetid);
       this.HaederAssetdata(assetid);
@@ -312,6 +372,9 @@ export default {
     cancelDetail(cancel) {
       this.Detail_group = cancel;
     },
+    cancelChange(cancel) {
+      this.Change_group = cancel;
+    },
     ListAssetItemA() {
       api.ListAssetItemAvailable(
         {
@@ -319,20 +382,6 @@ export default {
         },
         (result) => {
           this.AssetListitemA = result.data;
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-    },
-    changstatus(val) {
-      console.log(val)
-      api.UpdatestatusAssetItem(
-        {
-          id: val,
-        },
-        (result) => {
-          this.respones = result.respones;
         },
         (error) => {
           console.log(error);
@@ -360,7 +409,14 @@ export default {
         (result) => {
           this.headerdata = result.data;
           if (this.headerdata.qty == 0) {
-            this.openInsertAssetItem(this.Asset_id);
+            this.openInsertAssetItem(this.headerdata);
+          } else if (
+            this.headerdata.qty_available == 0 &&
+            this.headerdata.qty_unavailable == 0
+          ) {
+            this.openNullAssetItem(this.headerdata);
+          } else {
+            console.log("B");
           }
         },
         (error) => {
@@ -415,5 +471,3 @@ export default {
   background: linear-gradient(90.75deg, #00b9f8 5.43%, #3780ee 84.26%), #c4c4c4;
 }
 </style>
-
-

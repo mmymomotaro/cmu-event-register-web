@@ -1,11 +1,11 @@
 <template>
-  <div id="ManageAssetDamage">
+  <div id="Asset">
     <v-card class="pa-0 ma-0" elevation="1" tile color="white">
       <v-container grid-list-xs>
         <v-row no-gutters>
           <v-col cols="12" md="12" style="font-size: 1.7rem" class="text-center">
             <v-row no-gutters>
-              <v-col cols="12" md="3">สินทรัพย์เสียหาย</v-col>
+              <v-col cols="12" md="3">จัดการสินทรัพย์</v-col>
               <v-col cols="2" md="1" class="px-1">
                 <div class="text-left">
                   <v-menu
@@ -89,9 +89,7 @@
           <span style="font-size: 1.2rem">
             {{ search != "" ? "ผลลัพธ์ :" : "สินทรัพย์ทั้งหมด" }} {{ search }}</span
           >
-          <!-- <v-breadcrumbs class="pa-0" :items="items"></v-breadcrumbs> -->
         </v-col>
-        <v-col cols="12" md="2" class="px-1"> </v-col>
       </v-row>
       <v-item-group active-class="primary">
         <v-row no-gutters>
@@ -130,11 +128,21 @@
                     AssList.sub_category_name
                   }}</v-list-item-icon>
                 </div>
-                <div style="font-size: 14px" class="red--text">
-                  <v-list-item-icon class="ma-0"
-                    ><v-icon color="red" class="pr-2">highlight_off</v-icon> จำนวน
-                    {{ AssList.qty }} ชิ้น</v-list-item-icon
-                  >
+                <div v-if="AssList.qty === 0">
+                  <div style="font-size: 14px">
+                    <v-list-item-icon class="ma-0"
+                      ><v-icon class="pr-2">check_circle</v-icon> จำนวน
+                      {{ AssList.qty }} ชิ้น</v-list-item-icon
+                    >
+                  </div>
+                </div>
+                <div v-else>
+                  <div style="font-size: 14px" class="green--text">
+                    <v-list-item-icon class="ma-0"
+                      ><v-icon color="green" class="pr-2">check_circle</v-icon> จำนวน
+                      {{ AssList.qty }} ชิ้น</v-list-item-icon
+                    >
+                  </div>
                 </div>
               </v-card-text>
               <v-row no-gutters>
@@ -148,77 +156,40 @@
                   >
                 </v-col>
               </v-row>
-              <!-- <v-row no-gutters>
-                  <v-col cols="12" md="6" class="pa-1">
-                    <v-btn color="blue" text block @click="openUpdateAsset(AssList)"
-                      >แก้ไข</v-btn
-                    >
-                  </v-col>
-                  <v-col cols="12" md="6" class="pa-1">
-                    <v-btn color="red" text block @click="openDeleteAsset(AssList)"
-                      >ลบ</v-btn
-                    >
-                  </v-col>
-                </v-row> -->
+              <v-row no-gutters>
+                <v-col cols="12" md="6" class="pa-1">
+                  <v-btn color="blue" text block @click="openUpdateAsset(AssList)"
+                    >แก้ไข</v-btn
+                  >
+                </v-col>
+                <v-col cols="12" md="6" class="pa-1">
+                  <v-btn color="red" text block @click="openDeleteAsset(AssList)"
+                    >ลบ</v-btn
+                  >
+                </v-col>
+              </v-row>
             </v-card>
           </v-col>
         </v-row>
       </v-item-group>
     </v-container>
 
-    <!-- <v-dialog
-      persistent
-      transition="dialog-top-transition"
-      max-width="900"
-      v-model="Insert_group"
-    >
-      <InsertAssetDamage @close="closeInsert" @cancel="cancelInsert" />
-    </v-dialog> -->
-
-    <!-- <v-dialog
-      persistent
-      transition="dialog-top-transition"
-      max-width="900"
-      v-model="Update_group"
-    > -->
-    <!-- <UpdateAssetDamage
-        :SendAssetData="group_data"
-        @close="closeUpdate"
-        @cancel="cancelUpdate"
-      />
-    </v-dialog>
-
-    <v-dialog transition="dialog-top-transition" max-width="500" v-model="Delete_group">
-      <DeleteAssetDamage
-        :SendAssetData="group_data"
-        @close="closeDelete"
-        @cancel="cancelDelete"
-      />
-    </v-dialog> -->
-
     <v-dialog transition="dialog-top-transition" max-width="900" v-model="Detail_group">
-      <DetailAssetDamage :SendAssetData="group_data" />
+      <AssetDetail :SendAssetData="group_data" />
     </v-dialog>
   </div>
 </template>
 
 <script>
-import DetailAssetDamage from "../../../components/AssetDamage/DetailAssetDamage.vue";
-// import InsertAssetDamage from "../../../components/AssetDamage/InsertAssetDamage.vue";
-// import UpdateAssetDamage from "../../../components/AssetDamage/UpdateAssetDamage.vue";
-// import DeleteAssetDamage from "../../../components/AssetDamage/DeleteAssetDamage.vue";
-
-import api from "../../../services/asset";
+import AssetDetail from "../../components/User/AssetDetail.vue";
+import api from "../../services/asset";
 export default {
-  name: "ManageAssetDamage",
+  name: "manageAsset",
   data() {
     return {
       search: "",
       length: null,
       AssetList: [],
-      // Insert_group: false,
-      // Update_group: false,
-      // Delete_group: false,
       Detail_group: false,
       group_data: {},
       CategoryList: [],
@@ -227,54 +198,12 @@ export default {
     };
   },
   components: {
-    // InsertAssetDamage,
-    // UpdateAssetDamage,
-    // DeleteAssetDamage,
-    DetailAssetDamage,
+    AssetDetail,
   },
   methods: {
-    openInsertAsset() {
-      this.Insert_group = true;
-    },
     openAssetDetail(val) {
       this.group_data = val;
       this.Detail_group = true;
-    },
-    openUpdateAsset(val) {
-      this.group_data = val;
-      this.Update_group = true;
-      this.ListAssetdata();
-    },
-    openDeleteAsset(val) {
-      this.group_data = val;
-      this.Delete_group = true;
-    },
-
-    closeInsert(value) {
-      this.Insert_group = value;
-      this.ListAssetdata();
-    },
-    closeUpdate(value) {
-      this.Update_group = value;
-      this.ListAssetdata();
-    },
-    closeDelete(value) {
-      this.Delete_group = value;
-      this.ListAssetdata();
-    },
-
-    cancelInsert(value) {
-      this.Insert_group = value;
-    },
-    cancelUpdate(value) {
-      this.Update_group = value;
-    },
-    cancelDelete(value) {
-      this.Delete_group = value;
-    },
-
-    golistAssetitem(val) {
-      this.$router.push("listAssetitemDamage/" + val);
     },
     ListCateAndsubcate() {
       api.SerachAssetCatSub(
@@ -289,34 +218,8 @@ export default {
         }
       );
     },
-    ListCategorydata() {
-      api.ListCategory(
-        {
-          id: null,
-        },
-        (result) => {
-          this.CategoryList = result.data;
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-    },
-    ListSubCategorydata(val) {
-      api.ListSubCategory(
-        {
-          id: val,
-        },
-        (result) => {
-          this.SubCategoryList = result.data;
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-    },
     ListAssetdata() {
-      api.ListAssetDamage(
+      api.ListAsset(
         {
           id: null,
         },
@@ -335,7 +238,7 @@ export default {
           keyword: val,
           active: 1,
           limit: 25,
-          status: 0,
+          status: 1,
         },
         (result) => {
           this.AssetList = result.data;
@@ -350,7 +253,7 @@ export default {
         {
           category_id: val.id,
           sub_category_id: null,
-          status: 0,
+          status: 1,
         },
         (result) => {
           this.AssetList = result.data;
@@ -365,7 +268,7 @@ export default {
         {
           category_id: val.category_id,
           sub_category_id: val.id,
-          status: 0,
+          status: 1,
         },
         (result) => {
           this.AssetList = result.data;
@@ -390,7 +293,7 @@ export default {
     },
   },
   mounted() {
-    this.ListCategorydata();
+    this.ListCateAndsubcate();
     this.ListAssetdata();
   },
 };
@@ -399,7 +302,7 @@ export default {
 <style lang="scss" scoped>
 .button {
   font-size: 1.25rem;
-  background: linear-gradient(90.75deg, #ff4444 5.43%, #fa0000 84.26%), #c4c4c4;
+  background: linear-gradient(90.75deg, #00b9f8 5.43%, #3780ee 84.26%), #c4c4c4;
 }
 .bthover:hover {
   border-bottom: 1px;

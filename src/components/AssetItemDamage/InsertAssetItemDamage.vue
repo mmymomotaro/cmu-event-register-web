@@ -13,12 +13,13 @@
             maxlength="25"
             hint="ความยาวหมวดหมู่ไม่เกิน 25 ตัวอักษร"
             label="Serial Number"
+            color="black"
             required
           ></v-text-field>
         </v-col>
         <v-col cols="12" md="6">
           <v-select
-            color="light-blue darken-3"
+            color="black"
             v-model="Locationdata"
             prepend-icon="mdi-map-marker"
             :items="Location"
@@ -27,7 +28,7 @@
             label="สถานที่เก็บ"
             required
           ></v-select>
-          {{Locationdata}}
+          {{ Locationdata }}
         </v-col>
         <v-col cols="12" md="12">
           <v-menu
@@ -40,6 +41,7 @@
           >
             <template v-slot:activator="{ on, attrs }">
               <v-text-field
+                color="black"
                 v-model="warranty"
                 label="วันสินสุดรับประกัน"
                 prepend-icon="security"
@@ -48,7 +50,7 @@
                 v-on="on"
               ></v-text-field>
             </template>
-            <v-date-picker v-model="date" @input="menu2 = false"></v-date-picker>
+            <v-date-picker v-model="warranty" @input="menu2 = false" color="red"></v-date-picker>
           </v-menu>
         </v-col>
         <v-col cols="12" md="12">
@@ -57,6 +59,7 @@
             v-model="condition"
             prepend-icon="build"
             :thumb-size="24"
+            color="red"
             max="10"
             min="0"
             thumb-label="always"
@@ -64,6 +67,7 @@
         </v-col>
         <v-col cols="12" md="12">
           <v-textarea
+          color="black"
             prepend-icon="article"
             v-model="itemdescription"
             label="รายละเอียดเพิ่มเติม"
@@ -80,7 +84,7 @@
           <v-btn
             block
             outlined
-            color="primary"
+            color="red"
             height="2.5rem"
             @click="checkdataUpload()"
           >
@@ -125,7 +129,8 @@ export default {
       Locationdata: "",
       Location: [],
       response: "",
-      warranty: new Date().toISOString().substr(0, 10),
+      date_warranty: "",
+      warranty: "",
       menu2: false,
       condition: 10,
     };
@@ -134,9 +139,9 @@ export default {
   methods: {
     checkdataUpload() {
       if (this.Locationdata == "") {
-        this.openError()
+        this.openError();
       } else {
-        this.InsertAssetItemdata()
+        this.InsertAssetItemdata();
       }
     },
     ListLocationAssetItemdata() {

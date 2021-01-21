@@ -3,12 +3,15 @@
     <v-card class="pa-3 white--text" color="primary" style="font-size: 1.5rem"
       >แก้ไข</v-card
     >
+  
     <v-card class="pa-3">
+  {{AssetItem}}
       <v-row no-gutters>
         <v-col cols="12" md="6" class="pa-2">
           <v-text-field
             v-model="AssetItem.serial_number"
             counter
+            :disabled="AssetItem.serial_number == ''"
             prepend-icon="qr_code"
             maxlength="25"
             hint="ความยาวหมวดหมู่ไม่เกิน 25 ตัวอักษร"

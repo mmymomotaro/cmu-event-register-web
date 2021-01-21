@@ -45,12 +45,26 @@
                     style="font-size: 1rem; border-left: solid red 3px"
                     @click="ListAssetItemDetaildata(Asset)"
                   >
-                    <div v-if="Asset.serial_number === ''">
+                    <div
+                      v-if="Asset.serial_number === ''"
+                      style="
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                      "
+                    >
                       <div>
                         <v-icon color="black" class="pa-0"> qr_code</v-icon> ไม่มี
                       </div>
                     </div>
-                    <div v-else>
+                    <div
+                      v-else
+                      style="
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                      "
+                    >
                       <v-icon color="black" class="pa-0"> qr_code</v-icon>
                       {{ Asset.serial_number }}
                     </div>
