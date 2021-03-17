@@ -205,7 +205,7 @@ export default {
         email: this.email,
         googlesheet: this.partscut(this.gsheet),
         googleform: this.gform,
-        datetime: this.setdatetime(this.datetime),
+        datetime: this.myFunctiondate(this.datetime),
         checkbox: this.checkbox,
       }
       this.dataform = data

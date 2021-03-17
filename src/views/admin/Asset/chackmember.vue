@@ -288,7 +288,7 @@ export default {
       var columns = [
         { title: "ลำดับ", dataKey: "" },
         { title: "", dataKey: "prefix" },
-        { title: "รายชื่อ", dataKey: "prefix"+" "+"name" },
+        { title: "รายชื่อ", dataKey: "name" },
         { title: "", dataKey: "lastname" },
         { title: "คณะ", dataKey: "major" },
         { title: "วัน/เวลาเข้าร่วมงาน", dataKey: "comingtime" },
