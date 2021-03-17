@@ -1,16 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import About from '../views/About.vue'
 // User=====================================
-import ManageAsset from '../views/admin/Asset/ManageAsset.vue'
-import ManageCategory from '../views/admin/Category/ManageCategory.vue'
-import ListAssetitem from '../views/admin/Asset/listAssetitem.vue'
-import ManageAssetDamage from '../views/admin/AssetDamage/ManageAssetDamage.vue'
-import ListAssetitemDamage from '../views/admin/AssetDamage/listAssetitemDamage.vue'
-import Dashboard from '../views/admin/Dashboard.vue'
+import register from '../views/admin/Asset/register.vue'
 // User=====================================
-import Asset from '../views/user/Asset.vue'
+import listevent from '../views/admin/Asset/listevent.vue'
+import chackmember from '../views/admin/Asset/chackmember.vue'
+import Scanqrcode from '../views/admin/Scanqrcode.vue'
 
 Vue.use(VueRouter)
 
@@ -19,50 +15,48 @@ const routes = [
   //=========================Admin=========================//
   {
     path: '/',
+    name: 'listevent',
+    component: listevent
+  },
+  {
+    path: '/home',
     name: 'Home',
     component: Home
   },
+
   {
-    path: '/about',
-    name: 'About',
-    component: About
+    path: '/register',
+    name: 'Register',
+    component: register
   },
+
   {
-    path: '/ManageAsset',
-    name: 'ManageAsset',
-    component: ManageAsset
+    path: '/Scanqrcode/',
+    component: Scanqrcode, 
+    children:[
+      {
+        path:':id',
+      },
+    ]
   },
+
   {
-    path: '/ManageCategory',
-    name: 'ManageCategory',
-    component: ManageCategory
-  },
-  {
-    path: '/ListAssetitem/:id',
-    name: 'ListAssetitem',
-    component: ListAssetitem
-  },
-    {
-    path: '/ManageAssetDamage',
-    name: 'ManageAssetDamage',
-    component: ManageAssetDamage
-  },
-    {
-    path: '/ListAssetitemDamage/:id',
-    name: 'ListAssetitemDamage',
-    component: ListAssetitemDamage
+    path: '/listevent',
+    name: 'listevent',
+    component: listevent
   },
   {
-    path: '/Dashboard',
-    name: 'Dashboard',
-    component: Dashboard
+    path: '/chackmember/',
+    // name: 'chackmember',
+    component: chackmember, 
+    children:[
+      {
+        path:':id',
+      },
+    ]
   },
-//=========================User=========================//
-  {
-    path: '/Asset',
-    name: 'Asset',
-    component: Asset
-  },
+  
+  
 ]
 
 const router = new VueRouter({

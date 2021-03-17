@@ -329,6 +329,3 @@ HaederAsset(obj, success, error) {
   },
 
 }
-
-
-
