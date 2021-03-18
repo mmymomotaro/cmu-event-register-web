@@ -75,6 +75,7 @@ import moment from "moment"
 export default {
   mounted() {
     this.getUserDataform()
+    this.setdatetime()
   },
   data() {
     return {
@@ -148,7 +149,8 @@ export default {
     },
 
     setdatetime(set) {
-      let setdate = await this.
+      let setdata = this.dataform
+      console.log("setdate",setdata)
       var settime = moment(set).format("DD/MM/YYYY HH:mm")
       return settime
     },
