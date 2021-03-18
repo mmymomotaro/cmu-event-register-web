@@ -146,6 +146,11 @@ export default {
       this.deletename = user
     },
 
+    setdatetime(set) {
+      var settime = moment(set).format("DD/MM/YYYY HH:mm")
+      return settime
+    },
+
     submitevent() {
       this.$swal({
         title: "ผลการลงทะเบียนงานอบรม",
