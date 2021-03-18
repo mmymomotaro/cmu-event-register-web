@@ -71,6 +71,7 @@
 
 <script>
 import { HTTP } from "@/axios.js"
+import moment from "moment"
 export default {
   mounted() {
     this.getUserDataform()
@@ -147,6 +148,7 @@ export default {
     },
 
     setdatetime(set) {
+      let setdate = await this.
       var settime = moment(set).format("DD/MM/YYYY HH:mm")
       return settime
     },
